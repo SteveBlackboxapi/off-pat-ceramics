@@ -1,67 +1,17 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../styles/global.css';
+import { site } from '../config';
 ---
 
-<BaseLayout
-  title="Work Detail — Off-Pat Ceramics"
-  description="Hand-thrown ceramic piece"
->
-  <article class="work-detail">
-    <div class="container">
-      <a href="/gallery" class="back-link">← Back to Gallery</a>
-
-      <div class="work-grid">
-        <div class="work-image-main">
-          <img 
-            src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5162.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxNjIuanBlZyIsImlhdCI6MTc3OTgwNDI5OCwiZXhwIjoyNzI1ODg0Mjk4fQ.Pf1LTFvRDX4W4LZwDfPLlp5hmEOMmxMjWoTFDpS76M0" 
-            alt="Recent Bowl" 
-          />
-        </div>
-
-        <div class="work-info">
-          <h1>Recent Bowl</h1>
-          <p class="work-meta">Porcelain • 2025</p>
-          
-          <div class="work-description">
-            <p>Hand-thrown porcelain bowl with soft coastal textures.</p>
-            <p>One-of-a-kind piece. Food safe.</p>
-          </div>
-
-          <a href="/contact" class="btn-enquire">Enquire about this piece</a>
-          
-          <p class="note">Studio visits available by appointment in Felixstowe.</p>
-        </div>
-      </div>
-    </div>
-  </article>
-</BaseLayout>
-
-<style>
-  .work-detail { padding: 4rem 0 6rem; }
-  .back-link { display: inline-block; margin-bottom: 2rem; color: var(--color-text-muted); }
-  .work-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 4rem;
-  }
-  @media (min-width: 900px) {
-    .work-grid { grid-template-columns: 1fr 1fr; gap: 6rem; }
-  }
-  .work-image-main img {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-  }
-  .work-info h1 { font-size: 2.4rem; margin-bottom: 0.5rem; }
-  .work-meta { color: var(--color-accent); margin-bottom: 2rem; }
-  .work-description { line-height: 1.8; margin-bottom: 2.5rem; }
-  .btn-enquire {
-    display: inline-block;
-    background: #c26d5d;
-    color: white;
-    padding: 1rem 2.5rem;
-    border-radius: 4px;
-    text-decoration: none;
-  }
-  .note { font-size: 0.95rem; color: var(--color-text-muted); font-style: italic; }
-</style>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{Astro.props.title || site.name}</title>
+  <meta name="description" content={Astro.props.description || site.tagline} />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <slot />
+</body>
+</html>
