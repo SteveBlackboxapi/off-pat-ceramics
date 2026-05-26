@@ -3,181 +3,94 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('journal', ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
+  const works = await getCollection('works', ({ data }) => !data.draft);
+  return works.map((work) => ({
+    params: { slug: work.slug },
+    props: { work },
   }));
 }
 
-interface Props {
-  post: CollectionEntry<'journal'>;
-}
-
-const { post } = Astro.props;
-const { Content } = await post.render();
-
-const formatDate = (d: Date) =>
-  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const { work } = Astro.props;
+const { Content } = await work.render();
 ---
 
 <BaseLayout
-  title={`${post.data.title} — Journal`}
-  description={post.data.excerpt}
-  ogImage={post.data.image}
+  title={`${work.data.title} — Off-Pat Ceramics`}
+  description={work.data.description || ''}
 >
-  <article class="post section">
-    <div class="container container-narrow">
-      <header class="post-header fade-up">
-        <p class="back-link"><a href="/journal" class="link-underline">← Back to Journal</a></p>
-        <time datetime={post.data.date.toISOString()}>
-          {formatDate(post.data.date)}
-        </time>
-        <h1>{post.data.title}</h1>
-        {post.data.subtitle && <p class="post-subtitle">{post.data.subtitle}</p>}
-      </header>
+  <article class="work-detail">
+    <div class="container">
+      <a href="/gallery" class="back-link">← Back to Gallery</a>
 
-      {post.data.image && (
-        <figure class="post-image fade-up fade-up-delay-1">
-          <img src={post.data.image} alt={post.data.imageAlt ?? post.data.title} />
-        </figure>
-      )}
+      <div class="work-grid">
+        <div class="work-image-main">
+          {work.data.image && (
+            <img src={work.data.image} alt={work.data.title} />
+          )}
+        </div>
 
-      <div class="post-body fade-up fade-up-delay-2">
-        <Content />
+        <div class="work-info">
+          <h1>{work.data.title}</h1>
+          <p class="work-meta">
+            {work.data.year} • {work.data.materials}
+            {work.data.dimensions && ` • ${work.data.dimensions}`}
+          </p>
+
+          {work.data.price && (
+            <p class="work-price">{work.data.price}</p>
+          )}
+
+          <div class="work-description">
+            <Content />
+          </div>
+
+          <a href="/contact" class="btn btn-filled">Enquire about this piece</a>
+        </div>
       </div>
-
-      {post.data.tags.length > 0 && (
-        <footer class="post-footer">
-          <ul class="post-tags">
-            {post.data.tags.map((tag) => (
-              <li>{tag}</li>
-            ))}
-          </ul>
-        </footer>
-      )}
     </div>
   </article>
 </BaseLayout>
 
 <style>
-  .post-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
+  .work-detail {
+    padding: 4rem 0;
   }
-
   .back-link {
-    font-size: 0.78rem;
-    color: var(--color-text-muted);
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-  }
-
-  .post-header time {
-    font-size: 0.75rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 2rem;
     color: var(--color-text-muted);
   }
-
-  .post-header h1 {
-    font-size: clamp(2.25rem, 6vw, 4rem);
-    line-height: 1.1;
-    max-width: 22ch;
-    font-variation-settings: 'opsz' 144, 'SOFT' 30, 'wght' 380;
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
   }
-
-  .post-subtitle {
-    font-family: var(--font-display);
-    font-style: italic;
-    color: var(--color-text-muted);
-    font-size: 1.2rem;
-    max-width: 40ch;
+  @media (min-width: 900px) {
+    .work-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
   }
-
-  .post-image {
-    margin: 0 0 3rem 0;
-  }
-
-  .post-image img {
+  .work-image-main img {
     width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
+    height: auto;
+    border-radius: 2px;
   }
-
-  .post-body {
-    font-size: 1.05rem;
-    line-height: 1.85;
-    color: var(--color-text);
-    max-width: 65ch;
-    margin: 0 auto;
+  .work-info h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
   }
-
-  .post-body :global(h2) {
-    font-size: 1.75rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    font-variation-settings: 'opsz' 36, 'SOFT' 30, 'wght' 380;
-  }
-
-  .post-body :global(h3) {
-    font-size: 1.35rem;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .post-body :global(p) {
-    margin-bottom: 1.25rem;
-  }
-
-  .post-body :global(a) {
+  .work-meta {
     color: var(--color-accent);
-    border-bottom: 1px solid currentColor;
+    margin-bottom: 1.5rem;
   }
-
-  .post-body :global(blockquote) {
-    border-left: 2px solid var(--color-accent);
-    padding-left: 1.5rem;
-    margin: 2rem 0;
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.25rem;
-    color: var(--color-text-muted);
+  .work-price {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 1.5rem 0;
   }
-
-  .post-body :global(img) {
-    margin: 2rem 0;
-    width: 100%;
-  }
-
-  .post-footer {
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-line);
-    text-align: center;
-  }
-
-  .post-tags {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    list-style: none;
-  }
-
-  .post-tags li {
-    font-family: var(--font-body);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    padding: 0.4rem 0.85rem;
-    border: 1px solid var(--color-line-strong);
-    border-radius: 999px;
+  .work-description {
+    line-height: 1.8;
+    margin-bottom: 2rem;
   }
 </style>

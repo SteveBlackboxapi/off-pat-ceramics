@@ -1,59 +1,67 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/global.css';
-
-interface Props {
-  title?: string;
-  description?: string;
-  ogImage?: string;
-}
-
-const {
-  title = 'Your Studio — Hand-thrown ceramics',
-  description = 'Hand-thrown stoneware and one-of-a-kind ceramic vessels, made slowly on the coast.',
-  ogImage = '/images/og-default.jpg',
-} = Astro.props;
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
+<BaseLayout
+  title="Work Detail — Off-Pat Ceramics"
+  description="Hand-thrown ceramic piece"
+>
+  <article class="work-detail">
+    <div class="container">
+      <a href="/gallery" class="back-link">← Back to Gallery</a>
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+      <div class="work-grid">
+        <div class="work-image-main">
+          <img 
+            src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5162.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxNjIuanBlZyIsImlhdCI6MTc3OTgwNDI5OCwiZXhwIjoyNzI1ODg0Mjk4fQ.Pf1LTFvRDX4W4LZwDfPLlp5hmEOMmxMjWoTFDpS76M0" 
+            alt="Recent Bowl" 
+          />
+        </div>
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+        <div class="work-info">
+          <h1>Recent Bowl</h1>
+          <p class="work-meta">Porcelain • 2025</p>
+          
+          <div class="work-description">
+            <p>Hand-thrown porcelain bowl with soft coastal textures.</p>
+            <p>One-of-a-kind piece. Food safe.</p>
+          </div>
 
-    <!-- Fonts: Fraunces (display) + Manrope (body) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,30..100&family=Manrope:wght@300..700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <slot />
-    </main>
-    <Footer />
-  </body>
-</html>
+          <a href="/contact" class="btn-enquire">Enquire about this piece</a>
+          
+          <p class="note">Studio visits available by appointment in Felixstowe.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .work-detail { padding: 4rem 0 6rem; }
+  .back-link { display: inline-block; margin-bottom: 2rem; color: var(--color-text-muted); }
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  @media (min-width: 900px) {
+    .work-grid { grid-template-columns: 1fr 1fr; gap: 6rem; }
+  }
+  .work-image-main img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  .work-info h1 { font-size: 2.4rem; margin-bottom: 0.5rem; }
+  .work-meta { color: var(--color-accent); margin-bottom: 2rem; }
+  .work-description { line-height: 1.8; margin-bottom: 2.5rem; }
+  .btn-enquire {
+    display: inline-block;
+    background: #c26d5d;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  .note { font-size: 0.95rem; color: var(--color-text-muted); font-style: italic; }
+</style>
