@@ -26,7 +26,7 @@ export const site = {
 
 // Navigation — cleaned up
 export const nav = [
-  { label: 'Work', href: '/gallery' },
+{ label: 'Work', href: '/gallery' },
   { label: 'Journal', href: '/journal' },
   { label: 'Studio', href: '/about' },
   { label: 'Contact', href: '/contact' },
