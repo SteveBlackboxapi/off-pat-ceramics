@@ -10,13 +10,13 @@ import { site } from '../config';
   <section class="about section">
     <div class="container">
       <div class="about-grid">
+        <!-- Your real studio portrait -->
         <div class="about-image fade-up">
-          <div class="placeholder-img" style="aspect-ratio: 4/5;">
-            <span>Pat Todd in the studio</span>
-          </div>
-          <!-- Replace with your real photo later:
-          <img src="/images/about-portrait.jpg" alt="Pat Todd in the studio" />
-          -->
+          <img 
+            src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5937.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzU5MzcuanBlZyIsImlhdCI6MTc3OTgwNTEzMSwiZXhwIjoyNzI1ODg1MTMxfQ.itEMqE6AsOnLt4kj2ym837Lbd8888R5-On8pDXbM5o8" 
+            alt="Pat Todd in the studio" 
+            loading="lazy"
+          />
         </div>
 
         <div class="about-content fade-up fade-up-delay-1">
@@ -84,11 +84,11 @@ import { site } from '../config';
     gap: 3rem;
     align-items: start;
   }
-  .about-image img,
-  .about-image .placeholder-img {
+  .about-image img {
     width: 100%;
     aspect-ratio: 4 / 5;
     object-fit: cover;
+    border-radius: 2px;
   }
   .about-content {
     display: flex;
@@ -120,7 +120,6 @@ import { site } from '../config';
     color: var(--color-text);
     font-variation-settings: 'opsz' 36, 'SOFT' 80, 'wght' 300;
   }
-  /* Practice / details */
   .practice {
     border-top: 1px solid var(--color-line);
     margin-top: 3rem;
