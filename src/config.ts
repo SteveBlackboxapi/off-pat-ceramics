@@ -24,9 +24,10 @@ export const site = {
   footerStrap: 'Hand-thrown porcelain and stoneware from Felixstowe',
 };
 
-// Navigation — cleaned up
+// Navigation
 export const nav = [
-{ label: 'Work', href: '/gallery' },
+  { label: 'Home', href: '/' },
+  { label: 'Work', href: '/gallery' },
   { label: 'Journal', href: '/journal' },
   { label: 'Studio', href: '/about' },
   { label: 'Contact', href: '/contact' },
