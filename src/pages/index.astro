@@ -29,7 +29,7 @@ const upcomingEvents = allEvents
     <div class="container">
       <div class="two-column">
 
-        <!-- Left Column: Upcoming Events -->
+        <!-- Upcoming Events -->
         <div class="events-column">
           <h2 class="section-title">Upcoming Events</h2>
           
@@ -49,7 +49,7 @@ const upcomingEvents = allEvents
           )}
         </div>
 
-        <!-- Right Column: The Studio -->
+        <!-- The Studio -->
         <div class="studio-column">
           <h2 class="section-title">The Studio</h2>
           <div class="studio-info">
@@ -66,6 +66,13 @@ const upcomingEvents = allEvents
               {site.phone && <a href={`tel:${site.phone}`}>{site.phone}</a>}
             </p>
 
+            <p class="studio-address">
+              3 Penfold Road<br />
+              Felixstowe, Suffolk<br />
+              IP11 7BP
+            </p>
+
+            <!-- Studio Map (smaller) -->
             <div class="studio-map">
               <img 
                 src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" 
@@ -79,6 +86,18 @@ const upcomingEvents = allEvents
       </div>
     </div>
   </div>
+
+  <!-- Shop the Collection -->
+  <section class="shop-section">
+    <div class="container">
+      <p class="shop-heading">Shop the collection at</p>
+      <p class="shop-links">
+        <a href="#">Etsy</a> • 
+        <a href="#">Local pickup in Felixstowe</a> • 
+        <a href="/contact">Studio visits by appointment</a>
+      </p>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -92,22 +111,10 @@ const upcomingEvents = allEvents
     overflow: hidden;
     background: #f8f1e9;
   }
-
   .hero-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  .hero-overlay {
-    position: absolute;
-    bottom: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.95);
-    padding: 0.85rem 1.75rem;
-    border-radius: 3px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   }
 
   .main-content {
@@ -146,11 +153,10 @@ const upcomingEvents = allEvents
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 380px;   /* Reduced size */
   }
 
   .studio-map img {
     width: 100%;
     height: auto;
-    display: block;
-  }
-</style>
+    display
