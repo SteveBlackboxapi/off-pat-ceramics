@@ -40,8 +40,12 @@ const upcomingEvents = allEvents
                   {event.data.date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
                 </p>
                 <p class="event-title">{event.data.title}</p>
-                <p class="event-info">{event.data.time} • {event.data.location}</p>
-                {event.data.spotsLeft && <p class="spots">{event.data.spotsLeft} spots left</p>}
+                <p class="event-info">
+                  {event.data.time} • {event.data.location}
+                </p>
+                {event.data.spotsLeft && (
+                  <p class="spots">{event.data.spotsLeft} spots left</p>
+                )}
               </div>
             ))
           ) : (
@@ -72,7 +76,6 @@ const upcomingEvents = allEvents
               IP11 7BP
             </p>
 
-            <!-- Studio Map (smaller) -->
             <div class="studio-map">
               <img 
                 src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" 
@@ -86,18 +89,6 @@ const upcomingEvents = allEvents
       </div>
     </div>
   </div>
-
-  <!-- Shop the Collection -->
-  <section class="shop-section">
-    <div class="container">
-      <p class="shop-heading">Shop the collection at</p>
-      <p class="shop-links">
-        <a href="#">Etsy</a> • 
-        <a href="#">Local pickup in Felixstowe</a> • 
-        <a href="/contact">Studio visits by appointment</a>
-      </p>
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
@@ -142,21 +133,4 @@ const upcomingEvents = allEvents
     font-family: var(--font-display);
     font-size: 1.35rem;
     letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--color-line);
-    padding-bottom: 0.75rem;
-  }
-
-  .studio-map {
-    margin-top: 1.5rem;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    max-width: 380px;   /* Reduced size */
-  }
-
-  .studio-map img {
-    width: 100%;
-    height: auto;
-    display
+   
