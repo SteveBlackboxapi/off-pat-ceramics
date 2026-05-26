@@ -69,11 +69,11 @@ const upcomingEvents = allEvents
               {site.phone && <a href={`tel:${site.phone}`}>{site.phone}</a>}
             </p>
 
-            <!-- Map Image -->
+            <!-- Studio Map -->
             <div class="studio-map">
               <img 
                 src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" 
-                alt="Map to Off-Pat Ceramics studio in Felixstowe" 
+                alt="Map to Off-Pat Ceramics studio" 
                 loading="lazy"
               />
             </div>
@@ -116,10 +116,11 @@ const upcomingEvents = allEvents
   }
 
   .studio-map {
-    margin-top: 1.5rem;
+    margin-top: 1.8rem;
     border-radius: 4px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 420px;
   }
 
   .studio-map img {
