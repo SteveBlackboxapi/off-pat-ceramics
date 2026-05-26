@@ -2,7 +2,7 @@
 title: 'Inspiration'
 subtitle: 'The restless beauty of the Pacific at dawn'
 date: 2026-04-12
-image: '/images/journal-inspiration.jpg'
+image: 'https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/Bowl_insp.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvQm93bF9pbnNwLnBuZyIsImlhdCI6MTc3OTgwOTc3MiwiZXhwIjoyNzI1ODg5NzcyfQ.L9b1lEhTO5U88G2Vi5Bh_pN7gJoVxdwkSUGdd7txQkY'
 imageAlt: 'Misty coastline at dawn, with waves breaking on golden sand.'
 excerpt: |
   The way the tide carves the shore, leaving behind textures of sand and
