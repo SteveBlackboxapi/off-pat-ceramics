@@ -1,3 +1,4 @@
+// src/config.ts
 export const site = {
   name: 'Off-Pat Ceramics',
   tagline: 'Porcelain & Stoneware • Paintings in Clay',
@@ -22,3 +23,12 @@ export const site = {
 
   footerStrap: 'Hand-thrown porcelain and stoneware from Felixstowe',
 };
+
+// Navigation
+export const nav = [
+  { label: 'Work', href: '/gallery' },
+  { label: 'Vessels', href: '/gallery' },
+  { label: 'Journal', href: '/journal' },
+  { label: 'Studio', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
