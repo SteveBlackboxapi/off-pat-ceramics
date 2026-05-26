@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
+---
+
+<BaseLayout
+  title={`About — ${site.name}`}
+  description="Porcelain and stoneware ceramics by Pat Todd, Felixstowe"
+>
+  <section class="about section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image fade-up">
+          <div class="placeholder-img" style="aspect-ratio: 4/5;">
+            <span>Pat Todd in the studio</span>
+          </div>
+          <!-- Replace with your real photo later:
+          <img src="/images/about-portrait.jpg" alt="Pat Todd in the studio" />
+          -->
+        </div>
+
+        <div class="about-content fade-up fade-up-delay-1">
+          <p class="eyebrow">About</p>
+          <h1>Pat Todd — Off-Pat Ceramics</h1>
+          
+          <div class="about-body">
+            <p>
+              My name is Pat Todd. I am a ceramicist working mainly in porcelain and stoneware from my studio in Felixstowe, Suffolk.
+            </p>
+            <p>
+              I create functional bowls and decorative wall pieces that are essentially paintings in clay. 
+              My work is strongly influenced by the coastal landscape — the ever-changing sea, the beach textures, 
+              and the big Suffolk skies.
+            </p>
+            <p>
+              Each piece is individually hand-thrown or hand-built. I use slips, oxides and glazes to create 
+              unique surface textures and colours that capture the feeling of the coast.
+            </p>
+            <p>
+              The work is sold directly from the studio, through exhibitions, and at selected events. 
+              Studio visits are available by appointment.
+            </p>
+          </div>
+
+          <p class="signature">— Pat Todd</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="practice section-sm">
+    <div class="container container-narrow">
+      <div class="practice-grid">
+        <div>
+          <h3>Materials</h3>
+          <p>
+            High-quality porcelain and stoneware clays. I use a variety of slips, 
+            oxides and glazes to achieve the soft, painterly surfaces in my work.
+          </p>
+        </div>
+        <div>
+          <h3>Process</h3>
+          <p>
+            All pieces are hand-thrown or hand-built. Nothing is mass-produced — 
+            every item is a unique, one-off piece.
+          </p>
+        </div>
+        <div>
+          <h3>Exhibitions & Stockists</h3>
+          <p>
+            Work is regularly exhibited locally and available through the studio. 
+            Please get in touch for commissions or stockist enquiries.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .about-image img,
+  .about-image .placeholder-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .about-content h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-block: 0.5rem 1rem;
+    font-variation-settings: 'opsz' 96, 'SOFT' 30, 'wght' 380;
+    max-width: 18ch;
+  }
+  .about-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+  .about-body p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text);
+  }
+  .signature {
+    margin-top: 1.5rem;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--color-text);
+    font-variation-settings: 'opsz' 36, 'SOFT' 80, 'wght' 300;
+  }
+  /* Practice / details */
+  .practice {
+    border-top: 1px solid var(--color-line);
+    margin-top: 3rem;
+  }
+  .practice-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .practice-grid h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin-bottom: 0.6rem;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-variation-settings: 'opsz' 24, 'wght' 500;
+  }
+  .practice-grid p {
+    color: var(--color-text);
+    line-height: 1.7;
+  }
+  @media (min-width: 800px) {
+    .about-grid {
+      grid-template-columns: 1fr 1.1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+    .practice-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+  }
+</style>

@@ -1,17 +1,152 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
+import { getCollection } from 'astro:content';
 
+const allEvents = await getCollection('events', ({ data }) => !data.draft);
+const upcomingEvents = allEvents
+  .filter(e => e.data.date >= new Date())
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
+  .slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title={site.name}
+  description="Porcelain & Stoneware • Paintings in Clay — Felixstowe"
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-image">
+      <img src="/images/hero-bowl.jpg" alt="Saltglazed pouring bowl" loading="eager" />
+      <div class="hero-overlay">
+        <p class="hero-caption">Saltglazed pouring bowl, 2024</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="main-content">
+    <div class="container">
+      <div class="two-column">
+
+        <!-- Upcoming Events -->
+        <div class="events-column">
+          <h2 class="section-title">Upcoming Events</h2>
+          
+          {upcomingEvents.length > 0 ? (
+            upcomingEvents.map(event => (
+              <div class="event-item">
+                <p class="event-date">
+                  {event.data.date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
+                </p>
+                <p class="event-title">{event.data.title}</p>
+                <p class="event-info">{event.data.time} • {event.data.location}</p>
+                {event.data.spotsLeft && <p class="spots">{event.data.spotsLeft} spots left</p>}
+              </div>
+            ))
+          ) : (
+            <p>No upcoming events at the moment.</p>
+          )}
+        </div>
+
+        <!-- The Studio -->
+        <div class="studio-column">
+          <h2 class="section-title">The Studio</h2>
+          <div class="studio-info">
+            <p><strong>Off-Pat Ceramics</strong><br />
+            Felixstowe, Suffolk</p>
+            
+            <p>
+              Studio visits by appointment only.<br />
+              Please get in touch to arrange a visit.
+            </p>
+            
+            <p>
+              <a href={`mailto:${site.email}`}>{site.email}</a><br />
+              {site.phone && <a href={`tel:${site.phone}`}>{site.phone}</a>}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    height: 65vh;
+    min-height: 500px;
+    overflow: hidden;
+  }
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-overlay {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    background: rgba(255,255,255,0.85);
+    padding: 0.75rem 1.25rem;
+    border-radius: 2px;
+  }
+  .hero-caption {
+    font-style: italic;
+    color: #333;
+    margin: 0;
+  }
+
+  .main-content {
+    padding: 4rem 0;
+    background: var(--color-bg);
+  }
+
+  .two-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .two-column {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: 0.75rem;
+  }
+
+  .event-item {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .event-date {
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .event-title {
+    font-size: 1.15rem;
+    margin: 0.4rem 0;
+  }
+
+  .spots {
+    color: #c26d5d;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+</style>

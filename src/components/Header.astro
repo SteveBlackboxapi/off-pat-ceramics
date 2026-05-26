@@ -1,0 +1,63 @@
+---
+import { site, nav } from '../config';
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+};
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo" aria-label={`${site.name} home`}>
+      <span class="logo-text">
+        <span class="logo-name">{site.name}</span>
+        <span class="logo-sub">{site.tagline}</span>
+      </span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Primary">
+      {nav && nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={['nav-link', { active: isActive(item.href) }]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="location" aria-label="Studio location">
+      <span>{site.location}</span>
+    </div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile nav -->
+  <nav class="nav-mobile" id="nav-mobile">
+    {nav && nav.map((item) => (
+      <a href={item.href} class="nav-link-mobile">{item.label}</a>
+    ))}
+  </nav>
+</header>
+
+<style>
+  /* Keep your existing styles or paste the full styles from the zip if you prefer */
+  .site-header { position: sticky; top: 0; z-index: 50; background: #f8f1e9; border-bottom: 1px solid #d4b8a3; }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; max-width: 1280px; margin: 0 auto; }
+  .logo-name { font-size: 1.4rem; font-weight: 500; letter-spacing: 0.05em; }
+  .nav-desktop { display: flex; gap: 2rem; }
+  .nav-link { text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; }
+  .nav-link.active { color: #c26d5d; }
+</style>
+
+<script>
+  // Mobile menu (simple version)
+  const toggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('nav-mobile');
+  toggle?.addEventListener('click', () => mobileNav?.classList.toggle('open'));
+</script>

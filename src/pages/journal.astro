@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('journal', ({ data }) => !data.draft);
+const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout
+  title="Journal — Your Studio"
+  description="Notes from the studio — inspiration, process, and the work behind the work."
+>
+  <section class="journal-hero section-sm">
+    <div class="container">
+      <p class="eyebrow fade-up">Notes from the studio</p>
+      <h1 class="fade-up fade-up-delay-1">Journal</h1>
+    </div>
+  </section>
+
+  <section class="journal-list section">
+    <div class="container container-narrow">
+      {posts.length === 0 && (
+        <p class="empty">No journal entries yet — first one's coming soon.</p>
+      )}
+
+      <ul class="post-list">
+        {posts.map((post, i) => (
+          <li class={`post-row ${i % 2 === 0 ? 'post-row-left' : 'post-row-right'}`}>
+            <a href={`/journal/${post.slug}`} class="post-link">
+              <div class="post-image">
+                {post.data.image ? (
+                  <img src={post.data.image} alt={post.data.imageAlt ?? post.data.title} loading="lazy" />
+                ) : (
+                  <div class="placeholder-img" style="aspect-ratio: 4/3;">
+                    <span>{post.data.title}</span>
+                  </div>
+                )}
+              </div>
+              <div class="post-meta">
+                <time datetime={post.data.date.toISOString()}>
+                  {formatDate(post.data.date)}
+                </time>
+                <h2 class="post-title">{post.data.title}</h2>
+                {post.data.subtitle && <p class="post-subtitle">{post.data.subtitle}</p>}
+                <p class="post-excerpt">{post.data.excerpt}</p>
+                <span class="post-read">Read entry →</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .journal-hero {
+    text-align: center;
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .journal-hero h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    margin-top: 0.5rem;
+    font-variation-settings: 'opsz' 144, 'SOFT' 20, 'wght' 350;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 4rem 0;
+    font-style: italic;
+  }
+
+  .post-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 6vw, 5rem);
+  }
+
+  .post-link {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    color: var(--color-text);
+  }
+
+  .post-link:hover .post-title {
+    color: var(--color-accent);
+  }
+
+  .post-link:hover .post-image img,
+  .post-link:hover .placeholder-img {
+    transform: scale(1.02);
+  }
+
+  .post-image {
+    overflow: hidden;
+    background: var(--color-bg-alt);
+  }
+
+  .post-image img,
+  .post-image .placeholder-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .post-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .post-meta time {
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .post-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    line-height: 1.1;
+    transition: color var(--transition-fast);
+    font-variation-settings: 'opsz' 60, 'SOFT' 30, 'wght' 380;
+  }
+
+  .post-subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+  }
+
+  .post-excerpt {
+    color: var(--color-text);
+    line-height: 1.7;
+    white-space: pre-line;
+    max-width: 55ch;
+  }
+
+  .post-read {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 800px) {
+    .post-link {
+      grid-template-columns: 1.05fr 1fr;
+      gap: 3rem;
+    }
+
+    .post-row-right .post-link {
+      grid-template-areas: 'meta image';
+    }
+
+    .post-row-right .post-image {
+      grid-area: image;
+    }
+
+    .post-row-right .post-meta {
+      grid-area: meta;
+    }
+  }
+</style>

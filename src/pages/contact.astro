@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
+---
+
+<BaseLayout
+  title={`Contact — ${site.name}`}
+  description="Commissions, studio visits, and quiet conversations about clay and coast."
+>
+  <section class="contact section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-image fade-up">
+          <div class="placeholder-img" style="aspect-ratio: 1/1;">
+            <span>Studio image</span>
+          </div>
+          <!-- Replace with:
+          <img src="/images/contact.jpg" alt="A vessel in the studio." />
+          -->
+        </div>
+
+        <div class="contact-content fade-up fade-up-delay-1">
+          <h1>Let's make something together.</h1>
+          <p class="lead">
+            I welcome commissions, studio visits (limited), and quiet
+            conversations about clay and coast.
+          </p>
+
+          <!--
+            Netlify Forms — `data-netlify="true"` activates form handling.
+            Submissions appear in the Netlify dashboard under Forms.
+            No backend code needed.
+          -->
+          <form
+            class="contact-form"
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hp" hidden>
+              <label>Don't fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <label class="field">
+              <span class="field-label">Your name</span>
+              <input name="name" type="text" required autocomplete="name" />
+            </label>
+
+            <label class="field">
+              <span class="field-label">Email address</span>
+              <input name="email" type="email" required autocomplete="email" />
+            </label>
+
+            <label class="field">
+              <span class="field-label">Subject</span>
+              <select name="subject" required>
+                <option value="">Select an option</option>
+                <option>Commission Enquiry</option>
+                <option>Studio Visit</option>
+                <option>Stockist Enquiry</option>
+                <option>Workshop / Event</option>
+                <option>Other</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Message</span>
+              <textarea name="message" rows="6" required></textarea>
+            </label>
+
+            <button type="submit" class="btn btn-filled">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="studio-info section-sm">
+    <div class="container">
+      <div class="info-grid">
+        <div>
+          <p class="eyebrow">Studio & Showroom</p>
+          <p>
+            {site.address.line1}<br />
+            {site.address.line2}<br />
+            {site.address.city}{site.address.region ? `, ${site.address.region}` : ''}
+            {site.address.postcode && <><br />{site.address.postcode}</>}
+          </p>
+          <p class="info-note">By appointment only</p>
+        </div>
+        <div>
+          <p class="eyebrow">Get in touch</p>
+          <p>
+            <a href={`mailto:${site.email}`} class="link-underline">{site.email}</a>
+            {site.phone && (
+              <>
+                <br />
+                <a href={`tel:${site.phone}`}>{site.phone}</a>
+              </>
+            )}
+          </p>
+          {site.social.instagram && (
+            <p>
+              <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" class="link-underline">
+                Instagram
+              </a>
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-image img,
+  .contact-image .placeholder-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  .contact-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-content h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.05;
+    max-width: 14ch;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30, 'wght' 380;
+  }
+
+  .contact-content .lead {
+    max-width: 44ch;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .field-label {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--color-accent);
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    border-radius: 2px;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-hover);
+    background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 6rem;
+  }
+
+  .contact-form button {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
+
+  /* Studio info */
+  .studio-info {
+    border-top: 1px solid var(--color-line);
+    margin-top: 2rem;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .info-grid p {
+    line-height: 1.85;
+  }
+
+  .info-grid .eyebrow {
+    margin-bottom: 0.75rem;
+  }
+
+  .info-note {
+    font-style: italic;
+    font-family: var(--font-display);
+    color: var(--color-text-muted);
+    margin-top: 0.5rem !important;
+  }
+
+  @media (min-width: 800px) {
+    .contact-grid {
+      grid-template-columns: 1fr 1.15fr;
+      gap: clamp(3rem, 6vw, 6rem);
+    }
+    .info-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+</style>

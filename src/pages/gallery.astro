@@ -1,0 +1,248 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allWorks = await getCollection('works', ({ data }) => !data.draft);
+const works = allWorks.sort((a, b) => a.data.order - b.data.order);
+
+// Group by series for the section headings
+const series = [...new Set(works.map((w) => w.data.series).filter(Boolean))] as string[];
+const grouped: Record<string, typeof works> = {};
+for (const s of series) {
+  grouped[s] = works.filter((w) => w.data.series === s);
+}
+const ungrouped = works.filter((w) => !w.data.series);
+---
+
+<BaseLayout
+  title="Gallery — Your Studio"
+  description="Hand-thrown stoneware, one-of-a-kind pieces from the studio."
+>
+  <section class="gallery-hero section-sm">
+    <div class="container">
+      <p class="eyebrow fade-up">Work</p>
+      <h1 class="gallery-title fade-up fade-up-delay-1">Gallery</h1>
+      <p class="gallery-strap fade-up fade-up-delay-2">
+        Hand-thrown stoneware · made slowly on the coast
+      </p>
+    </div>
+  </section>
+
+  {series.map((s) => (
+    <section class="series section">
+      <div class="container">
+        <header class="series-header">
+          <h2 class="series-title">{s} <span class="series-year">— {grouped[s][0].data.year}</span></h2>
+          <p class="series-meta">{grouped[s].length} pieces · all one-of-a-kind</p>
+        </header>
+
+        <div class="works-grid">
+          {grouped[s].map((work) => (
+            <article class="work-card">
+              <div class="work-image">
+                {work.data.image ? (
+                  <img src={work.data.image} alt={work.data.imageAlt ?? work.data.title} loading="lazy" />
+                ) : (
+                  <div class="placeholder-img" style="aspect-ratio: 4/5;">
+                    <span>{work.data.title}</span>
+                  </div>
+                )}
+                {!work.data.available && <span class="sold-badge">Sold</span>}
+              </div>
+              <div class="work-info">
+                <h3 class="work-title">{work.data.title}</h3>
+                <p class="work-meta">
+                  {work.data.year} · {work.data.dimensions ?? '—'} · {work.data.materials}
+                </p>
+                {work.data.price && work.data.available && (
+                  <p class="work-price">{work.data.price}</p>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  {ungrouped.length > 0 && (
+    <section class="series section">
+      <div class="container">
+        <h2 class="series-title">Other Pieces</h2>
+        <div class="works-grid">
+          {ungrouped.map((work) => (
+            <article class="work-card">
+              <div class="work-image">
+                {work.data.image ? (
+                  <img src={work.data.image} alt={work.data.imageAlt ?? work.data.title} loading="lazy" />
+                ) : (
+                  <div class="placeholder-img" style="aspect-ratio: 4/5;">
+                    <span>{work.data.title}</span>
+                  </div>
+                )}
+              </div>
+              <div class="work-info">
+                <h3 class="work-title">{work.data.title}</h3>
+                <p class="work-meta">{work.data.materials}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="gallery-footer section-sm">
+    <div class="container">
+      <p class="footer-note">
+        All pieces are one-of-a-kind and made slowly on the coast. Ships in 2–3 weeks.
+        <br />
+        <a href="/contact" class="link-underline">Enquire about availability</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .gallery-hero {
+    text-align: center;
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .gallery-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    margin-block: 0.5rem;
+    font-variation-settings: 'opsz' 144, 'SOFT' 20, 'wght' 350;
+  }
+
+  .gallery-strap {
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+  }
+
+  .series-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .series-title {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-variation-settings: 'opsz' 60, 'SOFT' 20, 'wght' 350;
+  }
+
+  .series-year {
+    color: var(--color-text-muted);
+    font-weight: 300;
+  }
+
+  .series-meta {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-family: var(--font-display);
+  }
+
+  .works-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .works-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem 2rem;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .works-grid {
+      gap: 3rem 2.5rem;
+    }
+  }
+
+  .work-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    cursor: pointer;
+    transition: transform var(--transition);
+  }
+
+  .work-card:hover .work-image img,
+  .work-card:hover .placeholder-img {
+    transform: scale(1.02);
+  }
+
+  .work-image {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-bg-alt);
+  }
+
+  .work-image img,
+  .work-image .placeholder-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .sold-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .work-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .work-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--color-text);
+    font-variation-settings: 'opsz' 24;
+  }
+
+  .work-meta {
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    letter-spacing: 0.02em;
+  }
+
+  .work-price {
+    font-size: 0.92rem;
+    color: var(--color-text);
+    margin-top: 0.15rem;
+  }
+
+  .gallery-footer {
+    text-align: center;
+    border-top: 1px solid var(--color-line);
+    margin-top: 2rem;
+  }
+
+  .footer-note {
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-family: var(--font-display);
+    line-height: 1.9;
+  }
+</style>

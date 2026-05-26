@@ -1,5 +1,6 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  // Replace with your real domain once it's pointed at Netlify
+  site: 'https://your-domain.com',
+});

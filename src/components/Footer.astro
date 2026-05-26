@@ -1,0 +1,58 @@
+---
+import { site } from '../config';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-copy">
+      © {site.name} {year} · {site.address.city ?? site.location} · {site.footerStrap}
+    </p>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="/gallery" class="link-underline">Back to Shop</a>
+      {site.social.instagram && (
+        <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" class="link-underline">
+          Instagram
+        </a>
+      )}
+      <a href="/contact" class="link-underline">Email Newsletter</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-line);
+    padding: 1.75rem 0;
+    margin-top: 4rem;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .footer-copy {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.75rem;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 700px) {
+    .footer-inner {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+</style>
