@@ -16,10 +16,25 @@ import { site, nav } from '../config';
   <nav class="main-nav">
     <div class="nav-container">
       <a href="/" class="logo">{site.name}</a>
-      
-      <div class="nav-links">
+
+      <!-- Desktop Menu -->
+      <div class="nav-links desktop">
         {nav.map(item => (
           <a href={item.href} class="nav-link">{item.label}</a>
+        ))}
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button class="hamburger" aria-label="Toggle menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+      <div class="mobile-links">
+        {nav.map(item => (
+          <a href={item.href} class="mobile-link">{item.label}</a>
         ))}
       </div>
     </div>
@@ -29,6 +44,17 @@ import { site, nav } from '../config';
 
 </body>
 </html>
+
+<script>
+  // Simple mobile menu toggle
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.querySelector('.mobile-menu');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('active');
+    hamburger.classList.toggle('active');
+  });
+</script>
 
 <style>
   .main-nav {
@@ -53,19 +79,54 @@ import { site, nav } from '../config';
     text-decoration: none;
     color: var(--color-text);
   }
-  .nav-links {
-    display: flex;
+  .nav-links.desktop {
+    display: none;
     gap: 2rem;
   }
-  .nav-link {
+  .hamburger {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: block;
+  }
+
+  /* Mobile Menu */
+  .mobile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid #e5e0d8;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .mobile-menu.active {
+    display: block;
+  }
+  .mobile-links {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.5rem;
+  }
+  .mobile-link {
+    padding: 0.9rem 0;
     text-decoration: none;
     color: var(--color-text);
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 500;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #f0e9e0;
   }
-  .nav-link:hover {
-    color: var(--color-accent);
+
+  @media (min-width: 768px) {
+    .nav-links.desktop {
+      display: flex;
+    }
+    .hamburger {
+      display: none;
+    }
+    .mobile-menu {
+      display: none;
+    }
   }
 </style>
