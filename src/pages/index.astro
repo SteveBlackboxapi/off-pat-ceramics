@@ -68,6 +68,15 @@ const upcomingEvents = allEvents
               <a href={`mailto:${site.email}`}>{site.email}</a><br />
               {site.phone && <a href={`tel:${site.phone}`}>{site.phone}</a>}
             </p>
+
+            <!-- Map Image -->
+            <div class="studio-map">
+              <img 
+                src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" 
+                alt="Map to Off-Pat Ceramics studio in Felixstowe" 
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
 
@@ -88,11 +97,6 @@ const upcomingEvents = allEvents
     background: #f8f1e9;
   }
 
-  .hero-image {
-    width: 100%;
-    height: 100%;
-  }
-
   .hero-image img {
     width: 100%;
     height: 100%;
@@ -109,66 +113,18 @@ const upcomingEvents = allEvents
     padding: 0.85rem 1.75rem;
     border-radius: 3px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-    white-space: nowrap;
   }
 
-  .hero-caption {
-    font-style: italic;
-    color: #2a241e;
-    margin: 0;
-    font-size: 1.05rem;
+  .studio-map {
+    margin-top: 1.5rem;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
-  .main-content {
-    padding: 4rem 0;
-    background: var(--color-bg);
-  }
-
-  .two-column {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  @media (min-width: 900px) {
-    .two-column {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  .section-title {
-    font-family: var(--font-display);
-    font-size: 1.35rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--color-line);
-    padding-bottom: 0.75rem;
-  }
-
-  .event-item {
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  .event-date {
-    font-weight: 600;
-    color: var(--color-accent);
-    margin-bottom: 0.25rem;
-  }
-
-  .event-title {
-    font-size: 1.15rem;
-    margin: 0.4rem 0;
-  }
-
-  .spots {
-    color: #c26d5d;
-    font-size: 0.9rem;
-    font-weight: 500;
+  .studio-map img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 </style>
