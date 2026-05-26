@@ -32,7 +32,7 @@ const upcomingEvents = allEvents
     <div class="container">
       <div class="two-column">
 
-        <!-- Upcoming Events -->
+        <!-- Left Column: Upcoming Events -->
         <div class="events-column">
           <h2 class="section-title">Upcoming Events</h2>
           
@@ -52,7 +52,7 @@ const upcomingEvents = allEvents
           )}
         </div>
 
-        <!-- The Studio -->
+        <!-- Right Column: The Studio -->
         <div class="studio-column">
           <h2 class="section-title">The Studio</h2>
           <div class="studio-info">
@@ -69,7 +69,6 @@ const upcomingEvents = allEvents
               {site.phone && <a href={`tel:${site.phone}`}>{site.phone}</a>}
             </p>
 
-            <!-- Studio Map -->
             <div class="studio-map">
               <img 
                 src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" 
@@ -101,7 +100,6 @@ const upcomingEvents = allEvents
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
   }
 
   .hero-overlay {
@@ -115,12 +113,42 @@ const upcomingEvents = allEvents
     box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   }
 
+  .main-content {
+    padding: 4rem 0;
+    background: var(--color-bg);
+  }
+
+  .two-column {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .two-column {
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+    }
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: 0.75rem;
+  }
+
   .studio-map {
-    margin-top: 1.8rem;
+    margin-top: 1.5rem;
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    max-width: 420px;
   }
 
   .studio-map img {
