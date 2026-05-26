@@ -31,11 +31,17 @@ const works = allWorks.sort((a, b) => a.data.order - b.data.order);
         {works.map((work) => (
           <a href={`/gallery/${work.slug}`} class="work-card">
             <div class="work-image">
-              <img 
-                src={work.data.image} 
-                alt={work.data.title} 
-                loading="lazy" 
-              />
+              {work.data.image ? (
+                <img 
+                  src={work.data.image} 
+                  alt={work.data.title} 
+                  loading="lazy" 
+                />
+              ) : (
+                <div class="placeholder-img" style="aspect-ratio: 4/5;">
+                  <span>{work.data.title}</span>
+                </div>
+              )}
             </div>
             <div class="work-info">
               <h3 class="work-title">{work.data.title}</h3>
@@ -103,9 +109,5 @@ const works = allWorks.sort((a, b) => a.data.order - b.data.order);
   .work-meta {
     font-size: 0.85rem;
     color: var(--color-accent);
-  }
-  .work-price {
-    font-size: 0.95rem;
-    font-weight: 500;
   }
 </style>
