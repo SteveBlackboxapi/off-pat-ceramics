@@ -1,4 +1,4 @@
----
+D---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
@@ -11,11 +11,41 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
+
+// Different content for each piece
+const pieces = {
+  'recent-bowl': {
+    title: "Recent Bowl",
+    meta: "Porcelain • 2025",
+    image: "https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5162.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxNjIuanBlZyIsImlhdCI6MTc3OTgwNDI5OCwiZXhwIjoyNzI1ODg0Mjk4fQ.Pf1LTFvRDX4W4LZwDfPLlp5hmEOMmxMjWoTFDpS76M0",
+    description: "Hand-thrown porcelain bowl with soft coastal textures inspired by the Suffolk shoreline."
+  },
+  'recent-vessel': {
+    title: "Recent Vessel",
+    meta: "Stoneware • 2025",
+    image: "https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5201.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUyMDEuanBlZyIsImlhdCI6MTc3OTgwNDMzMywiZXhwIjoyNzI1ODg0MzMzfQ.GDI6K_cZhoOwhdIaf8BTe-9i-df3mt8nq459fCGCsok",
+    description: "Stoneware vessel with rich glazes capturing the movement of the tide."
+  },
+  'wall-piece': {
+    title: "Wall Piece",
+    meta: "Mixed • 2025",
+    image: "https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/DSC_0043_2.JPG?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvRFNDXzAwNDNfMi5KUEciLCJpYXQiOjE3Nzk4MDQ4NDIsImV4cCI6MjcyNTg4NDg0Mn0.Byc1C2gi5_GhIKyvssWPTf7EC2GwYz2OLSdALCKQb1E",
+    description: "Decorative wall piece evoking the layers and textures of the coastal landscape."
+  },
+  'recent-piece': {
+    title: "Recent Piece",
+    meta: "Stoneware • 2025",
+    image: "https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5180.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxODAuanBlZyIsImlhdCI6MTc3OTgwNDQwMCwiZXhwIjoyNzI1ODg0NDAwfQ.8mYcmbghC7mxa1WcwZu9cgbE5j6FlzXKG-iFhMP0JaI",
+    description: "Unique stoneware form with organic shape and subtle surface variation."
+  }
+};
+
+const piece = pieces[slug] || pieces['recent-bowl'];
 ---
 
 <BaseLayout
-  title="Work Detail — Off-Pat Ceramics"
-  description="Hand-thrown ceramic piece from Felixstowe"
+  title={`${piece.title} — Off-Pat Ceramics`}
+  description={piece.description}
 >
   <article class="work-detail">
     <div class="container">
@@ -23,19 +53,16 @@ const { slug } = Astro.params;
 
       <div class="work-grid">
         <div class="work-image-main">
-          <img 
-            src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5162.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxNjIuanBlZyIsImlhdCI6MTc3OTgwNDI5OCwiZXhwIjoyNzI1ODg0Mjk4fQ.Pf1LTFvRDX4W4LZwDfPLlp5hmEOMmxMjWoTFDpS76M0" 
-            alt="Recent Bowl" 
-          />
+          <img src={piece.image} alt={piece.title} />
         </div>
 
         <div class="work-info">
-          <h1>Recent Bowl</h1>
-          <p class="work-meta">Porcelain • 2025</p>
+          <h1>{piece.title}</h1>
+          <p class="work-meta">{piece.meta}</p>
           
           <div class="work-description">
-            <p>Hand-thrown porcelain bowl with soft coastal textures inspired by the Suffolk shoreline.</p>
-            <p>One-of-a-kind piece. Food safe and suitable for everyday use or display.</p>
+            <p>{piece.description}</p>
+            <p>One-of-a-kind piece. Food safe where applicable.</p>
           </div>
 
           <a href="/contact" class="btn-enquire">Enquire about this piece</a>
