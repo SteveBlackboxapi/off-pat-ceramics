@@ -1,9 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-
-const allWorks = await getCollection('works', ({ data }) => !data.draft);
-const works = allWorks.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout
@@ -12,9 +8,9 @@ const works = allWorks.sort((a, b) => a.data.order - b.data.order);
 >
   <section class="gallery-hero section-sm">
     <div class="container">
-      <p class="eyebrow fade-up">Work</p>
-      <h1 class="gallery-title fade-up fade-up-delay-1">Gallery</h1>
-      <p class="gallery-strap fade-up fade-up-delay-2">
+      <p class="eyebrow">Work</p>
+      <h1 class="gallery-title">Gallery</h1>
+      <p class="gallery-strap">
         Hand-thrown porcelain & stoneware • made slowly in Felixstowe
       </p>
     </div>
@@ -28,62 +24,67 @@ const works = allWorks.sort((a, b) => a.data.order - b.data.order);
       </header>
 
       <div class="works-grid">
-        {works.map((work) => (
-          <a href={`/gallery/${work.slug}`} class="work-card">
-            <div class="work-image">
-              {work.data.image ? (
-                <img 
-                  src={work.data.image} 
-                  alt={work.data.title} 
-                  loading="lazy" 
-                />
-              ) : (
-                <div class="placeholder-img" style="aspect-ratio: 4/5;">
-                  <span>{work.data.title}</span>
-                </div>
-              )}
-            </div>
-            <div class="work-info">
-              <h3 class="work-title">{work.data.title}</h3>
-              <p class="work-meta">
-                {work.data.year} • {work.data.materials}
-                {work.data.dimensions && ` • ${work.data.dimensions}`}
-              </p>
-              {work.data.price && (
-                <p class="work-price">{work.data.price}</p>
-              )}
-            </div>
-          </a>
-        ))}
+        <!-- Image 1 -->
+        <a href="/gallery/recent-bowl-1" class="work-card">
+          <div class="work-image">
+            <img src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5162.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxNjIuanBlZyIsImlhdCI6MTc3OTgwNDI5OCwiZXhwIjoyNzI1ODg0Mjk4fQ.Pf1LTFvRDX4W4LZwDfPLlp5hmEOMmxMjWoTFDpS76M0" alt="Recent Bowl" loading="lazy" />
+          </div>
+          <div class="work-info">
+            <h3 class="work-title">Recent Bowl</h3>
+            <p class="work-meta">Porcelain • 2025</p>
+          </div>
+        </a>
+
+        <!-- Image 2 -->
+        <a href="/gallery/recent-vessel" class="work-card">
+          <div class="work-image">
+            <img src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5201.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUyMDEuanBlZyIsImlhdCI6MTc3OTgwNDMzMywiZXhwIjoyNzI1ODg0MzMzfQ.GDI6K_cZhoOwhdIaf8BTe-9i-df3mt8nq459fCGCsok" alt="Recent Vessel" loading="lazy" />
+          </div>
+          <div class="work-info">
+            <h3 class="work-title">Recent Vessel</h3>
+            <p class="work-meta">Stoneware • 2025</p>
+          </div>
+        </a>
+
+        <!-- Image 3 -->
+        <a href="/gallery/wall-piece" class="work-card">
+          <div class="work-image">
+            <img src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/DSC_0043_2.JPG?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvRFNDXzAwNDNfMi5KUEciLCJpYXQiOjE3Nzk4MDQ4NDIsImV4cCI6MjcyNTg4NDg0Mn0.Byc1C2gi5_GhIKyvssWPTf7EC2GwYz2OLSdALCKQb1E" alt="Wall Piece" loading="lazy" />
+          </div>
+          <div class="work-info">
+            <h3 class="work-title">Wall Piece</h3>
+            <p class="work-meta">Mixed Media • 2025</p>
+          </div>
+        </a>
+
+        <!-- Image 4 -->
+        <a href="/gallery/recent-piece" class="work-card">
+          <div class="work-image">
+            <img src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5180.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxODAuanBlZyIsImlhdCI6MTc3OTgwNDQwMCwiZXhwIjoyNzI1ODg0NDAwfQ.8mYcmbghC7mxa1WcwZu9cgbE5j6FlzXKG-iFhMP0JaI" alt="Recent Piece" loading="lazy" />
+          </div>
+          <div class="work-info">
+            <h3 class="work-title">Recent Piece</h3>
+            <p class="work-meta">Stoneware • 2025</p>
+          </div>
+        </a>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .gallery-hero {
-    text-align: center;
-    padding-top: clamp(2.5rem, 6vw, 5rem);
-  }
-  .gallery-title {
-    font-size: clamp(3rem, 8vw, 6rem);
-    margin-block: 0.5rem;
-  }
-  .gallery-strap {
-    color: var(--color-text-muted);
-    font-style: italic;
-    font-size: 1.05rem;
-  }
+  /* Same styles as before */
+  .gallery-hero { text-align: center; padding-top: clamp(2.5rem, 6vw, 5rem); }
+  .gallery-title { font-size: clamp(3rem, 8vw, 6rem); margin-block: 0.5rem; }
+  .gallery-strap { color: var(--color-text-muted); font-style: italic; font-size: 1.05rem; }
+  
   .works-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem 1.5rem;
   }
   @media (min-width: 600px) {
-    .works-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 2.5rem 2rem;
-    }
+    .works-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem 2rem; }
   }
   .work-card {
     display: flex;
@@ -99,15 +100,7 @@ const works = allWorks.sort((a, b) => a.data.order - b.data.order);
     border-radius: 2px;
     transition: transform 0.4s ease;
   }
-  .work-card:hover .work-image img {
-    transform: scale(1.03);
-  }
-  .work-title {
-    font-size: 1.15rem;
-    margin: 0.4rem 0 0.2rem;
-  }
-  .work-meta {
-    font-size: 0.85rem;
-    color: var(--color-accent);
-  }
+  .work-card:hover .work-image img { transform: scale(1.03); }
+  .work-title { font-size: 1.15rem; margin: 0.4rem 0 0.2rem; }
+  .work-meta { font-size: 0.85rem; color: var(--color-accent); }
 </style>
