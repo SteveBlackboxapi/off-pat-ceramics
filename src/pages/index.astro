@@ -15,18 +15,19 @@ const upcomingEvents = allEvents
   description="Porcelain & Stoneware • Paintings in Clay — Felixstowe"
 >
   <!-- Hero -->
-<section class="hero">
-  <div class="hero-image">
-    <img 
-      src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/hero-bowl.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvaGVyby1ib3dsLmpwZyIsImlhdCI6MTc3OTc5MTI3NywiZXhwIjoyNzI1ODcxMjc3fQ.8Vv94-evHQq0yImwIVOPx5E9Y2Hlw95eRhHNL5SspWw" 
-      alt="Saltglazed pouring bowl, 2024" 
-      loading="eager" 
-    />
-    <div class="hero-overlay">
-      <p class="hero-caption">Saltglazed pouring bowl, 2024</p>
+  <section class="hero">
+    <div class="hero-image">
+      <img 
+        src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/hero-bowl.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvaGVyby1ib3dsLmpwZyIsImlhdCI6MTc3OTc5MTI3NywiZXhwIjoyNzI1ODcxMjc3fQ.8Vv94-evHQq0yImwIVOPx5E9Y2Hlw95eRhHNL5SspWw" 
+        alt="Saltglazed pouring bowl, 2024" 
+        loading="eager" 
+      />
+      <div class="hero-overlay">
+        <p class="hero-caption">Saltglazed pouring bowl, 2024</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
   <div class="main-content">
     <div class="container">
       <div class="two-column">
@@ -69,6 +70,7 @@ const upcomingEvents = allEvents
             </p>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -77,27 +79,41 @@ const upcomingEvents = allEvents
 <style>
   .hero {
     position: relative;
-    height: 65vh;
-    min-height: 500px;
+    height: 70vh;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
+    background: #f8f1e9;
   }
-  .hero-image img {
+
+  .hero-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  .hero-image img {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  }
+
   .hero-overlay {
     position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    background: rgba(255,255,255,0.85);
-    padding: 0.75rem 1.25rem;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.92);
+    padding: 0.75rem 1.5rem;
     border-radius: 2px;
-  }
-  .hero-caption {
-    font-style: italic;
-    color: #333;
-    margin: 0;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
   .main-content {
