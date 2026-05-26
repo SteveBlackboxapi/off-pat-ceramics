@@ -1,10 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { slug: 'recent-bowl' } },
+    { params: { slug: 'recent-vessel' } },
+    { params: { slug: 'wall-piece' } },
+    { params: { slug: 'recent-piece' } },
+  ];
+}
+
+const { slug } = Astro.params;
 ---
 
 <BaseLayout
   title="Work Detail — Off-Pat Ceramics"
-  description="Hand-thrown ceramic piece"
+  description="Hand-thrown ceramic piece from Felixstowe"
 >
   <article class="work-detail">
     <div class="container">
@@ -23,13 +34,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <p class="work-meta">Porcelain • 2025</p>
           
           <div class="work-description">
-            <p>Hand-thrown porcelain bowl with soft coastal textures.</p>
-            <p>One-of-a-kind piece. Food safe and suitable for daily use.</p>
+            <p>Hand-thrown porcelain bowl with soft coastal textures inspired by the Suffolk shoreline.</p>
+            <p>One-of-a-kind piece. Food safe and suitable for everyday use or display.</p>
           </div>
 
           <a href="/contact" class="btn-enquire">Enquire about this piece</a>
           
-          <p class="note">Studio visits available by appointment in Felixstowe.</p>
+          <p class="note">Studio visits available by appointment in Felixstowe, Suffolk.</p>
         </div>
       </div>
     </div>
