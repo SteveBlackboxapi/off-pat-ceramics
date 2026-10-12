@@ -81,6 +81,9 @@ if (formAction) {
           <p class="contact-email">
             <a href={`mailto:${site.email}`}>{site.email}</a>
           </p>
+          <p class="contact-phone">
+            <a href={`tel:${site.phone.replace(/\s/g, '').replace(/^0/, '+44')}`}>{site.phone}</a>
+          </p>
         </div>
       </div>
     </div>
@@ -117,7 +120,8 @@ if (formAction) {
   .email-contact { margin-top: 2rem; }
   .email-contact .btn { margin-top: 1.5rem; }
   .contact-email { margin-top: 1.25rem; overflow-wrap: anywhere; }
-  .contact-email a { text-decoration: underline; text-underline-offset: 0.2em; }
+  .contact-phone { margin-top: 0.75rem; }
+  .contact-email a, .contact-phone a { text-decoration: underline; text-underline-offset: 0.2em; }
 
   .contact-form {
     display: flex;
