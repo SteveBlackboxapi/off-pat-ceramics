@@ -40,9 +40,12 @@ Cloudflare Workers Builds settings:
 | Deploy command | `npx wrangler deploy` |
 
 The first deployment used a temporary build command that checked out the
-migration branch. Once the production branch is set correctly in Cloudflare
-Settings → Builds, restore the build command above. Do not merge to `main`
-or change the public domain as part of preview design work.
+migration branch. On 12 October 2026, Steven confirmed the settings above in
+the Cloudflare dashboard: production branch `codex/cloudflare-migration`,
+build command `npm run build`, deploy command `npx wrangler deploy`, and root
+directory `/`. The temporary checkout command has been removed. Pushes to
+this branch now target the workers.dev preview. Do not merge to `main` or
+change the public domain as part of preview design work.
 
 `wrangler.jsonc` configures static assets, clean URLs and the custom 404.
 `public/_headers` contains the security headers. Set `SITE_URL` to the final
