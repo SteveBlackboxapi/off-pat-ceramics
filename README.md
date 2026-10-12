@@ -51,6 +51,13 @@ change the public domain as part of preview design work.
 `public/_headers` contains the security headers. Set `SITE_URL` to the final
 HTTPS origin only when the public domain has been confirmed.
 
+If Astro builds successfully but Wrangler's Worker-name validation receives
+`504 Gateway Timeout` from Cloudflare's `/workers/services/off-pat-ceramics`
+API, the deployment request timed out. This does not establish a Worker-name
+mismatch. Retry the failed build before changing the Worker name, build
+commands or token permissions. The 12 October 2026 deployment encountered
+this timeout after successfully building all 21 pages.
+
 ## Upcoming events
 
 Homepage and `/events` share `src/components/EventList.astro`. Add a Markdown
