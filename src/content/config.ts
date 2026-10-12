@@ -15,8 +15,8 @@ const events = defineCollection({
     image: z.string().optional(),         // path under /public, e.g. "/images/workshop.jpg"
     imageAlt: z.string().optional(),
     description: z.string(),
+    detailsUrl: z.string().url().optional(),
     reserveUrl: z.string().optional(),    // booking link
-    price: z.string().optional(),
     skillLevel: z.string().optional(),
     whatToBring: z.string().optional(),
     cancellationPolicy: z.string().optional(),
@@ -56,9 +56,7 @@ const works = defineCollection({
     imageAlt: z.string().optional(),
     materials: z.string(),                // e.g. "stoneware · celadon"
     dimensions: z.string().optional(),    // e.g. "18cm"
-    price: z.string().optional(),
     description: z.string().optional(),
-    available: z.boolean().default(true),
     featured: z.boolean().default(false),
     order: z.number().default(0),
     draft: z.boolean().default(false),

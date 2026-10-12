@@ -6,8 +6,6 @@ image: '/images/work-tide-vessel.jpg'
 imageAlt: 'Tall stoneware vessel with seafoam and lavender glaze.'
 materials: 'stoneware · seafoam & iron glaze'
 dimensions: '34cm × 15cm'
-price: '£420'
-available: true
 featured: true
 order: 1
 ---

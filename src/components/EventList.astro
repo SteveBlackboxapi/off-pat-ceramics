@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import { upcomingEvents, eventEndDay, formatEventDate } from '../utils/events';
+
+const events = upcomingEvents(await getCollection('events'));
+interface Props { showPosters?: boolean; }
+const { showPosters = false } = Astro.props;
+---
+
+<div class="event-list" data-event-list>
+  {events.map(event => (
+    <article class="event" data-event-end={eventEndDay(event)}>
+      <p class="event-date">
+        <time datetime={event.data.date.toISOString().slice(0, 10)}>{formatEventDate(event.data.date)}</time>
+        {event.data.endDate && eventEndDay(event) !== event.data.date.toISOString().slice(0, 10) && (
+          <> – <time datetime={eventEndDay(event)}>{formatEventDate(event.data.endDate)}</time></>
+        )}
+      </p>
+      <h3>{event.data.title}</h3>
+      <p class="event-location">{event.data.location} · {event.data.time}</p>
+      <p class="event-description">{event.data.description}</p>
+      <a class="event-link" href="/contact">Ask me about this event →</a>
+      {event.data.detailsUrl && <a class="event-link organiser-link" href={event.data.detailsUrl}>Visit the organiser’s website ↗</a>}
+      {showPosters && event.data.image && (
+        <a class="event-poster" href={event.data.image} aria-label={`View the full poster for ${event.data.title}`}>
+          <img src={event.data.image} alt={event.data.imageAlt ?? event.data.title} loading="lazy" />
+        </a>
+      )}
+    </article>
+  ))}
+  <div class="event-empty" data-event-empty hidden={events.length > 0}>
+    <h3>New dates to come.</h3>
+    <p>For details of upcoming exhibitions, events or a studio visit, please get in touch.</p>
+    <a class="event-link" href="/contact">Contact me →</a>
+  </div>
+</div>
+
+<script>
+  import { londonDay } from '../utils/events';
+
+  // Static pages can stay deployed between updates. Hide events after their
+  // final calendar day in the studio's timezone, including multi-day events.
+  function refreshEvents() {
+    const today = londonDay();
+    document.querySelectorAll<HTMLElement>('[data-event-list]').forEach(list => {
+      let visible = 0;
+      list.querySelectorAll<HTMLElement>('[data-event-end]').forEach(event => {
+        event.hidden = (event.dataset.eventEnd ?? '') < today;
+        if (!event.hidden) visible++;
+      });
+      const empty = list.querySelector<HTMLElement>('[data-event-empty]');
+      if (empty) empty.hidden = visible > 0;
+    });
+  }
+  refreshEvents();
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refreshEvents();
+  });
+</script>
+
+<style>
+  .event, .event-empty { padding: 1.75rem 0; border-top: 1px solid var(--color-line-strong); }
+  .event-date { font-size: 0.85rem; margin-bottom: 0.75rem; color: var(--color-text-muted); }
+  h3 { font-size: clamp(1.35rem, 3vw, 1.8rem); margin-bottom: 0.7rem; }
+  .event-location { font-weight: 600; font-size: 0.95rem; }
+  .event-description, .event-empty p { max-width: 56ch; margin-top: 0.75rem; }
+  .event-link { display: inline-block; margin-top: 1.25rem; text-decoration: underline; text-underline-offset: 0.25em; }
+  .organiser-link { margin-right: 1rem; margin-left: 1.5rem; }
+  .event-poster { display: block; max-width: 25rem; margin-top: 2rem; }
+  .event-poster img { width: 100%; }
+  @media (max-width: 600px) { .organiser-link { display: block; margin-left: 0; } }
+</style>

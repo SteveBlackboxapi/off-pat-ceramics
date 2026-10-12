@@ -10,13 +10,13 @@ const year = new Date().getFullYear();
       © {site.name} {year} · {site.address.city ?? site.location} · {site.footerStrap}
     </p>
     <nav class="footer-links" aria-label="Footer">
-      <a href="/gallery" class="link-underline">Back to Shop</a>
+      <a href="/events" class="link-underline">Upcoming events</a>
       {site.social.instagram && (
         <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" class="link-underline">
           Instagram
         </a>
       )}
-      <a href="/contact" class="link-underline">Email Newsletter</a>
+      <a href="/contact" class="link-underline">Contact me</a>
     </nav>
   </div>
 </footer>
@@ -30,6 +30,7 @@ const year = new Date().getFullYear();
 
   .footer-inner {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start;
@@ -44,6 +45,7 @@ const year = new Date().getFullYear();
 
   .footer-links {
     display: flex;
+    flex-wrap: wrap;
     gap: 1.75rem;
     font-size: 0.78rem;
     color: var(--color-text-muted);

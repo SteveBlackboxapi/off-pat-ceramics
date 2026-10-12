@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EventList from '../components/EventList.astro';
+import { site } from '../config';
+---
+
+<BaseLayout title={`Upcoming events — ${site.name}`} description="Find out where to meet Pat Todd and see Off-Pat Ceramics at upcoming exhibitions and events.">
+  <section class="section">
+    <div class="container container-narrow">
+      <p class="eyebrow">Meet me & see my work</p>
+      <h1>Upcoming events</h1>
+      <p class="lead">Exhibitions, fairs and opportunities to see my ceramics in person.</p>
+      <EventList showPosters />
+      <aside>
+        <h2>A visit to the studio</h2>
+        <p>My studio is in Felixstowe, Suffolk. Visits are by appointment — <a href="/contact">contact me</a> to arrange a time.</p>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); margin: 1rem 0 1.5rem; }
+  .lead { max-width: 52ch; margin-bottom: 3rem; }
+  aside { margin-top: 2rem; padding: 2rem; background: var(--color-surface); }
+  aside h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+  aside a { text-decoration: underline; text-underline-offset: 0.2em; }
+</style>

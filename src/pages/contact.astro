@@ -13,7 +13,7 @@ if (formAction) {
 
 <BaseLayout
   title={`Contact — ${site.name}`}
-  description="Commissions, studio visits, and quiet conversations about clay and coast."
+  description="Contact Pat Todd about her ceramics, upcoming events, exhibitions or a studio visit."
 >
   <section class="contact section">
     <div class="container">
@@ -28,10 +28,10 @@ if (formAction) {
         </div>
 
         <div class="contact-content">
-          <h1>Let's make something together.</h1>
+          <h1>Contact me</h1>
           <p class="lead">
-            I welcome commissions, studio visits (limited), and quiet
-            conversations about clay and coast.
+            For enquiries about my ceramics, where I'll be exhibiting,
+            or arranging a studio visit, please get in touch.
           </p>
 
           {formAction ? <form
@@ -54,10 +54,9 @@ if (formAction) {
               <span class="field-label">Subject</span>
               <select name="subject" required>
                 <option value="">Select an option</option>
-                <option>Commission Enquiry</option>
+                <option>Enquiry about my work</option>
                 <option>Studio Visit</option>
-                <option>Stockist Enquiry</option>
-                <option>Workshop / Event</option>
+                <option>Exhibition or event</option>
                 <option>Other</option>
               </select>
             </label>
@@ -71,11 +70,11 @@ if (formAction) {
           </form> : (
             <div class="email-contact">
               <p>
-                Email me about a commission, a studio visit, or a piece you've
-                seen. Include a few details about what you have in mind.
+                Tell me a little about your enquiry. If it's about a particular
+                piece, you can include its name or a link to the photograph.
               </p>
               <a class="btn btn-filled" href={`mailto:${site.email}`}>
-                Email the studio
+                Email Pat
               </a>
             </div>
           )}
@@ -112,7 +111,13 @@ if (formAction) {
   .lead {
     max-width: 44ch;
     font-size: 1.1rem;
+    margin-top: 1.5rem;
   }
+
+  .email-contact { margin-top: 2rem; }
+  .email-contact .btn { margin-top: 1.5rem; }
+  .contact-email { margin-top: 1.25rem; overflow-wrap: anywhere; }
+  .contact-email a { text-decoration: underline; text-underline-offset: 0.2em; }
 
   .contact-form {
     display: flex;
