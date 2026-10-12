@@ -1,69 +1,131 @@
-# Your Studio — site
+# Off-Pat Ceramics — site
 
-A clean, editorial Astro site for a ceramic studio (or any maker-style brand).
-Designed to be deployed to Netlify and edited in markdown.
+The Off-Pat Ceramics website, built with Astro and edited in Markdown.
+Prepared for Cloudflare Workers with Static Assets. See the cutover steps below;
+committing these files does not move the live site or remove its Netlify project.
 
 ---
 
 ## 1 · Quick start (local)
 
-You need [Node.js 20+](https://nodejs.org) installed.
+Use Node.js 22 (also declared in `.node-version`).
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-The site will be at `http://localhost:4321`. Edits to any file
-hot-reload automatically.
-
-To build for production:
+Astro serves the site at `http://localhost:4321`. To build and then preview
+using the Cloudflare runtime:
 
 ```bash
 npm run build
+npm run preview:cloudflare
 ```
 
-The static site is output to `dist/`. That's what Netlify deploys.
+The static output is `dist/`. No server-rendering adapter, database, or API
+credentials are required for the default email-contact version.
 
 ---
 
-## 2 · Deploy to Netlify
+## 2 · Deploy to Cloudflare and retire Netlify
 
-You've got two routes — pick whichever is easier.
+This migration uses **Cloudflare Workers with Static Assets**. The
+`wrangler.jsonc` file declares the asset directory, clean URLs, and custom 404
+handling. `public/_headers` preserves the previous security headers.
 
-### A) Drag-and-drop (simplest)
+### Git-connected deployment
 
-1. Run `npm run build` locally.
-2. Go to [app.netlify.com/drop](https://app.netlify.com/drop).
-3. Drag the `dist/` folder onto the page.
-4. Done — you'll get a `*.netlify.app` URL immediately.
+In the Cloudflare dashboard, open **Workers & Pages**, create a Worker, and
+choose the option to import a Git repository. Select
+`SteveBlackboxapi/off-pat-ceramics`.
 
-This is great for the first deploy, but every update means
-re-building locally and re-dragging.
+| Setting | Value |
+|---|---|
+| Worker name | `off-pat-ceramics` |
+| Root directory | Repository root |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Production branch after cutover | `main` |
+| Node version | `22` (from `.node-version`) |
 
-### B) Git-based (recommended for ongoing edits)
+For the first validation deployment, choose the migration branch
+`codex/cloudflare-migration`, which contains the Cloudflare configuration.
+Keep the existing Netlify production deployment running during this check.
+Cloudflare generates the actual `workers.dev` URL; copy it from the deployment
+result rather than assuming the account subdomain.
 
-1. Push this folder to a GitHub / GitLab / Bitbucket repo.
-2. In Netlify, click **Add new site → Import an existing project**.
-3. Pick your repo. Netlify auto-detects Astro and reads `netlify.toml`,
-   so you don't need to configure anything.
-4. Click **Deploy**. Every `git push` to your main branch redeploys
-   automatically. Pull requests get preview URLs.
+Once deployed, the build integration can rebuild and deploy on pushes to its
+selected production branch. After the migration branch is merged, change that
+production branch to `main`.
 
-### Connecting your existing domain
+### Contact enquiries: decide before cutover
 
-In your Netlify site dashboard:
+The old form depended on Netlify Forms. Cloudflare does not provide that
+service simply by moving the HTML. This branch removes the Netlify form
+attributes and uses an explicit email contact by default, pointing to the
+existing studio email in `src/config.ts`. It does not submit messages or show
+an unearned success response.
 
-1. **Domain management → Add a domain you already own**, enter it.
-2. Netlify gives you DNS records to add. You have two options:
-   - **Easiest**: change your domain's nameservers to Netlify's
-     (Netlify shows you which ones). Netlify then handles all DNS.
-   - **Keep your existing DNS provider**: add a `CNAME` (or `A` for
-     apex domains) pointing at Netlify, as shown in their instructions.
-3. Wait for DNS to propagate (usually a few minutes, sometimes a few
-   hours). HTTPS certificate is provisioned automatically by Netlify.
+To retain an on-page form, configure a public HTTPS form-processing endpoint
+using the build variable `PUBLIC_CONTACT_FORM_ACTION`, then rebuild. The form
+posts `name`, `email`, `subject`, and `message` using a normal HTML POST.
+The chosen service must support these fields, validate submissions, provide
+spam protection, and display a real success/error response. There is no
+built-in form backend in this repository. Do not use a generic URL or an API
+endpoint requiring secret headers; the action is public in the generated HTML.
 
-That's it — no server, no maintenance, no hosting fees on the free tier.
+`.env.example` documents the optional variable for local builds. Until an
+endpoint is configured and tested, the page shows the studio email and an
+**Email the studio** link that opens the visitor's email app.
+
+Before switching the live site, confirm the email-only contact is acceptable,
+or configure and test the replacement form. Existing Netlify submissions do
+not move with the Git repository: export any records that must be retained
+before removing that project.
+
+### Domain and cutover
+
+1. Verify the Cloudflare URL: homepage, gallery and individual pieces,
+   journal and individual posts, studio, contact, mobile navigation, images,
+   security headers, and a deliberately missing URL returning the 404 page.
+2. Confirm email enquiries are acceptable, or configure and test the new form.
+3. If a custom domain is in use, identify its existing Netlify/DNS settings and
+   preserve a record for rollback. Add that domain in the Worker's
+   **Settings → Domains & Routes**. Worker custom domains require a domain
+   managed in the same Cloudflare account. Preserve email DNS records (MX/TXT)
+   when changing DNS; do not change unrelated services.
+4. Set `SITE_URL` to the confirmed public HTTPS origin as a Cloudflare **build**
+   variable and rebuild. The repository no longer contains a fake domain.
+5. Merge this branch and point Cloudflare's production build integration at
+   `main`. Pause Netlify's automatic production builds during cutover so
+   merging the migration cannot inadvertently alter the old production site.
+6. Verify the real domain, HTTPS, images, and contact route on Cloudflare.
+   Keep the Netlify deployment available until those checks pass.
+7. Export retained Netlify form submissions, then disconnect its Git
+   integration and retire the old site when rollback is no longer needed.
+   Account deletion and subscription cancellation are separate actions.
+
+Rollback before Netlify is retired: restore the recorded web DNS records to
+Netlify. Keep the verified old deployment available for this purpose; if
+rebuilding there, use the pre-migration revision containing `netlify.toml` and
+the original Netlify form.
+
+### CLI deployment (optional)
+
+For an already authenticated Cloudflare CLI session:
+
+```bash
+npm run deploy
+```
+
+This builds before deploying. The Cloudflare dashboard integration uses the
+separate commands above so it builds only once. Do not commit API tokens.
+
+Official guidance:
+- [Migrate Netlify to Workers](https://developers.cloudflare.com/workers/static-assets/migration-guides/netlify-to-workers/)
+- [Workers build configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+- [Static asset headers](https://developers.cloudflare.com/workers/static-assets/headers/)
 
 ---
 
@@ -256,7 +318,7 @@ your-studio-site/
 │   └── styles/
 │       └── global.css
 ├── astro.config.mjs
-├── netlify.toml
+├── wrangler.jsonc          ← Cloudflare static asset hosting
 ├── package.json
 └── tsconfig.json
 ```
@@ -279,16 +341,9 @@ your-studio-site/
 
 ---
 
-## 8 · Form submissions
+## 8 · Contact configuration
 
-The contact form uses **Netlify Forms** — submissions appear in your
-Netlify dashboard under **Forms** with no backend needed. The free
-tier includes 100 submissions per month. Spam protection is built-in
-(there's a hidden honeypot field already configured).
-
-To get email notifications when someone submits, configure them in
-**Site settings → Forms → Form notifications** in Netlify.
-
----
-
-That's everything. Anything unclear, ask.
+The contact page uses the studio email in `src/config.ts` unless
+`PUBLIC_CONTACT_FORM_ACTION` is configured at build time. See section 2 for
+replacement form requirements, testing, and preservation of old Netlify
+submissions. Netlify's form dashboard is not part of the Cloudflare deployment.

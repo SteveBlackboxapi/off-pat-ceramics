@@ -1,6 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config';
+
+const formAction = import.meta.env.PUBLIC_CONTACT_FORM_ACTION?.trim();
+if (formAction) {
+  const endpoint = new URL(formAction);
+  if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password) {
+    throw new Error('PUBLIC_CONTACT_FORM_ACTION must be a public HTTPS form endpoint without credentials.');
+  }
+}
 ---
 
 <BaseLayout
@@ -26,18 +34,12 @@ import { site } from '../config';
             conversations about clay and coast.
           </p>
 
-          <form
+          {formAction ? <form
             class="contact-form"
             name="contact"
             method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
+            action={formAction}
           >
-            <input type="hidden" name="form-name" value="contact" />
-            <p class="hp" hidden>
-              <label>Don't fill this out: <input name="bot-field" /></label>
-            </p>
-
             <label class="field">
               <span class="field-label">Your name</span>
               <input name="name" type="text" required autocomplete="name" />
@@ -66,7 +68,20 @@ import { site } from '../config';
             </label>
 
             <button type="submit" class="btn btn-filled">Send Message</button>
-          </form>
+          </form> : (
+            <div class="email-contact">
+              <p>
+                Email me about a commission, a studio visit, or a piece you've
+                seen. Include a few details about what you have in mind.
+              </p>
+              <a class="btn btn-filled" href={`mailto:${site.email}`}>
+                Email the studio
+              </a>
+            </div>
+          )}
+          <p class="contact-email">
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </p>
         </div>
       </div>
     </div>
