@@ -121,24 +121,36 @@ editable item in its preview. **Save draft** keeps changes private;
 **Publish changes** makes the draft public. The previous published version
 can be restored to a draft before republishing.
 
-Authentication uses Supabase email sign-in links. Only the verified account
+Authentication uses a Supabase email code entered directly in the editor.
+Only the verified account
 `stevendavidlewis@gmail.com` is authorized, through a fresh database lookup
 in `offpat_private.is_editor()`. A sign-in by any other account confers no
 content or image-library access. No secret/service-role key is shipped.
 
-### One-time email return URL
+### One-time email template setup
 
-In Supabase Authentication → URL Configuration, add this **Redirect URL**:
+In the OFF PAT project's Supabase Authentication → Email Templates, set both
+**Magic Link** and **Confirm signup** to use this subject:
 
 ```text
-https://off-pat-ceramics.stevendavidlewis80.workers.dev/admin
+Your Off-Pat Ceramics sign-in code
 ```
 
-On 13 October, a read-only invalid-link check confirmed that this URL was not
-yet allowed: Supabase fell back to `http://localhost:3000`. The connected MCP
-tools do not expose Auth URL configuration. Complete this dashboard setting
-before using the sign-in link; retain any existing URLs. When the public
-domain is approved later, add its `/admin` URL as well.
+Use the body in `supabase/templates/editor-code.html` for both. It includes
+`{{ .Token }}` to send the one-time code. Confirm signup covers the first login
+for a new or unconfirmed account; Magic Link covers later sign-ins. These are
+project-wide templates. The connected MCP tools cannot change Auth templates,
+so the dashboard step remains necessary before the first code request.
+
+In `/admin`, choose **Email me a code**, check the email, then type the code and
+choose **Sign in**. Resends have a 60-second cooldown; the server also enforces
+its own rate limits and expiry. Verification uses `verifyOtp` with `type:
+'email'`. No code is placed in a URL or stored by the application.
+
+Code sign-in needs no redirect URL and supersedes the earlier localhost
+redirect troubleshooting. Retain existing Auth URL settings for other flows.
+Email delivery and a real signed-in editing/upload check still need Steven's
+first login after the templates are saved.
 
 ### Content and uploads
 

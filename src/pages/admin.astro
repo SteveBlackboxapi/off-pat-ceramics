@@ -9,10 +9,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <form id="login-form">
       <label for="login-email">Your email address</label>
       <input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com" />
-      <button class="btn btn-filled" type="submit">Email me a sign-in link</button>
+      <button id="send-code" class="btn btn-filled" type="submit">Email me a code</button>
+    </form>
+    <form id="code-form" hidden>
+      <p>Enter the code sent to <strong id="code-email"></strong>.</p>
+      <label for="login-code">Sign-in code</label>
+      <input id="login-code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,10}" minlength="6" maxlength="10" required aria-describedby="login-message" />
+      <button id="verify-code" class="btn btn-filled" type="submit">Sign in</button>
+      <div class="code-actions">
+        <button id="resend-code" class="text-button" type="button">Send another code</button>
+        <button id="change-email" class="text-button" type="button">Change email address</button>
+      </div>
     </form>
     <p id="login-message" role="status" aria-live="polite"></p>
-    <p class="small-note">Access is limited to approved editors. Open the link in the email to continue.</p>
+    <p class="small-note">Access is limited to approved editors. Keep this page open while you check your email.</p>
     <a href="/">← Back to the website</a>
   </section>
 
@@ -76,6 +86,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .login-card form { margin-top: 2rem; display: grid; gap: 0.8rem; }
   .login-card input { width: 100%; border: 1px solid var(--color-line-strong); background: white; padding: 0.9rem; }
   .login-card .btn { justify-self: start; margin-top: 0.5rem; }
+  #login-code { max-width: 18rem; font: inherit; font-size: 1.5rem; letter-spacing: 0.15em; }
+  .code-actions { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; }
+  .code-actions .text-button { padding-left: 0; }
   #login-message { margin-top: 1rem; }
   .small-note { font-size: 0.83rem; color: var(--color-text-muted); line-height: 1.55; margin: 0.7rem 0 1.25rem; }
   .editor-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 2rem; background: #f9f7f2; }

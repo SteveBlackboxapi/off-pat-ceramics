@@ -341,16 +341,81 @@ $('restore-previous').addEventListener('click', async () => {
   finally { setBusy(false); }
 });
 
-$('login-form').addEventListener('submit', async event => {
-  event.preventDefault();
-  const submit = document.querySelector<HTMLButtonElement>('#login-form button')!; submit.disabled = true;
-  loginStatus('Sending your sign-in link…');
+let pendingEmail = '', loginBusy = false, resendAt = 0;
+let resendTimer: number | undefined;
+function updateLoginControls() {
+  for (const id of ['send-code', 'verify-code', 'change-email', 'login-email', 'login-code']) {
+    $<HTMLButtonElement | HTMLInputElement>(id).disabled = loginBusy;
+  }
+  const seconds = Math.max(0, Math.ceil((resendAt - Date.now()) / 1000));
+  const resend = $<HTMLButtonElement>('resend-code');
+  resend.disabled = loginBusy || seconds > 0;
+  resend.textContent = seconds ? `Send another code in ${seconds}s` : 'Send another code';
+  if (!seconds && resendTimer !== undefined) { window.clearInterval(resendTimer); resendTimer = undefined; }
+}
+function resetLogin() {
+  pendingEmail = ''; resendAt = 0;
+  $<HTMLInputElement>('login-code').value = '';
+  $('code-email').textContent = '';
+  $('code-form').hidden = true; $('login-form').hidden = false;
+  updateLoginControls();
+}
+async function requestCode(email: string) {
+  if (loginBusy) return;
+  loginBusy = true; updateLoginControls();
+  loginStatus('Sending your sign-in code…');
   try {
-    const { error } = await client.auth.signInWithOtp({ email: $<HTMLInputElement>('login-email').value.trim(), options: { emailRedirectTo: location.origin + '/admin', shouldCreateUser: true } });
+    const { error } = await client.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
     if (error) throw error;
-    loginStatus('Check your inbox. Open the sign-in link to return to your editor.');
+    pendingEmail = email;
+    $('code-email').textContent = email;
+    $<HTMLInputElement>('login-code').value = '';
+    $('login-form').hidden = true; $('code-form').hidden = false;
+    resendAt = Date.now() + 60_000;
+    if (resendTimer !== undefined) window.clearInterval(resendTimer);
+    resendTimer = window.setInterval(updateLoginControls, 1000);
+    loginStatus('Check your inbox and spam folder, then enter the latest code here.');
   } catch (error) { loginStatus(errorMessage(error), true); }
-  finally { submit.disabled = false; }
+  finally {
+    loginBusy = false; updateLoginControls();
+    if (pendingEmail) $<HTMLInputElement>('login-code').focus();
+  }
+}
+$('login-form').addEventListener('submit', event => {
+  event.preventDefault();
+  void requestCode($<HTMLInputElement>('login-email').value.trim());
+});
+$('resend-code').addEventListener('click', () => {
+  if (pendingEmail && Date.now() >= resendAt) void requestCode(pendingEmail);
+});
+$('change-email').addEventListener('click', () => {
+  if (loginBusy) return;
+  resetLogin(); loginStatus('Enter the email address you want to sign in with.');
+  $<HTMLInputElement>('login-email').focus();
+});
+$('login-code').addEventListener('input', () => {
+  const input = $<HTMLInputElement>('login-code');
+  input.value = input.value.replace(/[^0-9]/g, '');
+});
+$('code-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (loginBusy || !pendingEmail) return;
+  const input = $<HTMLInputElement>('login-code');
+  const token = input.value.trim();
+  if (!/^[0-9]{6,10}$/.test(token)) { loginStatus('Enter the full code from your email.', true); input.focus(); return; }
+  loginBusy = true; updateLoginControls(); loginStatus('Checking your code…');
+  try {
+    const { error } = await client.auth.verifyOtp({ email: pendingEmail, token, type: 'email' });
+    if (error) throw error;
+    input.value = '';
+    await refreshSession();
+  } catch (error) {
+    const code = (error as { code?: string }).code;
+    loginStatus(code === 'otp_expired' ? 'That code is incorrect or has expired. Check the latest email, or request another code.' : errorMessage(error), true);
+  } finally {
+    loginBusy = false; updateLoginControls();
+    if (!$('code-form').hidden) { input.focus(); input.select(); }
+  }
 });
 $('sign-out').addEventListener('click', async () => {
   if (dirty && !confirm('Sign out without saving these changes?')) return;
@@ -358,6 +423,7 @@ $('sign-out').addEventListener('click', async () => {
   if (error) { status(errorMessage(error), true); return; }
   dirty = false; ready = false; signed.clear(); draft = {}; published = {}; fields = [];
   frame.src = 'about:blank'; userId = undefined;
+  resetLogin();
   $('editor-app').hidden = true; $('editor-login').hidden = false; loginStatus('You are signed out.');
 });
 window.addEventListener('beforeunload', event => { if (dirty) { event.preventDefault(); event.returnValue = ''; } });
@@ -368,7 +434,7 @@ async function refreshSession() {
     const { data: { user } } = await client.auth.getUser();
     if (!user) {
       if (ready) {
-        ready = false; $('editor-app').hidden = true; $('editor-login').hidden = false; frame.src = 'about:blank';
+        ready = false; resetLogin(); $('editor-app').hidden = true; $('editor-login').hidden = false; frame.src = 'about:blank';
         loginStatus('Your session has ended. Sign in again to continue.', true);
       }
       return;
@@ -377,12 +443,13 @@ async function refreshSession() {
     const { data, error } = await client.from('offpat_content').select('id,content,version');
     if (error) throw error;
     const saved = data?.find(row => row.id === 'draft');
-    if (!saved) { loginStatus('This email address does not have editing access.', true); await client.auth.signOut(); return; }
+    if (!saved) { resetLogin(); loginStatus('This email address does not have editing access.', true); await client.auth.signOut(); return; }
     const keepUnsaved = dirty && user.id === userId;
     userId = user.id;
     if (!keepUnsaved) { draft = cleanContent(saved.content); version = saved.version; }
     published = cleanContent(data?.find(row => row.id === 'published')?.content);
     dirty = keepUnsaved; ready = true;
+    resetLogin();
     $('editor-login').hidden = true; $('editor-app').hidden = false;
     status(keepUnsaved ? 'Your unsaved changes are still here. Save your draft when ready.' : canonical(draft) === canonical(published) ? 'You are editing the published version. Changes stay private until you publish.' : 'Your saved draft has unpublished changes.');
     loadPage();
