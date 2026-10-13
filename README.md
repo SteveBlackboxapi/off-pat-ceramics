@@ -121,10 +121,16 @@ editable item in its preview. **Save draft** keeps changes private;
 **Publish changes** makes the draft public. The previous published version
 can be restored to a draft before republishing.
 
+On **Selected work**, the dashed **+ Add work** tile opens a form for a name,
+photograph, optional category and description. Upload a photograph or choose
+one from the image library, then choose **Add to draft**. The new tile and its
+artwork detail page stay private until publishing. Select any field on an
+added piece to edit its full details or remove it from the draft. The plus
+tile is hidden in clean preview and never appears on the public website.
+
 Authentication uses a Supabase email code entered directly in the editor.
-Only the verified account
-`stevendavidlewis@gmail.com` is authorized, through a fresh database lookup
-in `offpat_private.is_editor()`. A sign-in by any other account confers no
+Only a verified account allowed by `offpat_private.is_editor()` is authorized,
+through a fresh database lookup. A sign-in by any other account confers no
 content or image-library access. No secret/service-role key is shipped.
 
 ### One-time email template setup
@@ -175,9 +181,20 @@ outages, with the built site as a final fallback. `/admin` and draft preview
 responses are not indexed or cached. Same-origin framing allows the editor's
 preview; other sites cannot frame it.
 
-Current supported editing scope: existing page sections and artwork entries,
-including the existing event. Adding/removing whole artwork entries or events
-still requires a source change. The editor does not change page URLs/layouts.
+Added artwork is stored alongside existing overrides, using an immutable
+`work-<UUID>` slug and flat `piece.<slug>.*` fields. Its image remains a
+top-level value so the existing Storage policies also protect new uploads.
+The Worker renders added gallery cards and serves detail pages from a shared
+template only when the piece exists in published content. No database schema
+change or rebuild is needed when an editor adds a piece.
+
+Existing page sections and the existing event remain editable. Adding whole
+events or removing the original curated artwork still requires a source
+change. The editor does not change the overall page layout.
+
+Run `npm run build && node --test tests/*.test.ts` to check content validation,
+login handling and the public Worker draft/publish lifecycle with local mock
+content. These checks do not contact the live database or send sign-in emails.
 
 For direct source edits:
 
