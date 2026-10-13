@@ -13,13 +13,13 @@ const { piece } = Astro.props;
   <article class="work-detail container">
     <a href="/gallery" class="back-link">← Back to selected work</a>
     <div class="work-grid">
-      <img class="work-image" src={piece.image} srcset={piece.thumbnail ? `${piece.thumbnail} ${piece.width! / 2}w, ${piece.image} ${piece.width}w` : undefined} sizes="(min-width: 1280px) 610px, (min-width: 900px) 50vw, 90vw" alt={piece.alt} width={piece.width} height={piece.height} />
+      <img data-edit-image={`piece.${piece.slug}.image`} data-edit-label="Artwork photograph" class="work-image" src={piece.image} srcset={piece.thumbnail ? `${piece.thumbnail} ${piece.width! / 2}w, ${piece.image} ${piece.width}w` : undefined} sizes="(min-width: 1280px) 610px, (min-width: 900px) 50vw, 90vw" alt={piece.alt} width={piece.width} height={piece.height} />
       <div class="work-info">
-        <p class="eyebrow">{piece.kind}</p>
-        <h1>{piece.title}</h1>
-        <p class="work-description">{piece.description}</p>
+        <p class="eyebrow" data-edit={`piece.${piece.slug}.kind`} data-edit-label="Category">{piece.kind}</p>
+        <h1 data-edit={`piece.${piece.slug}.title`} data-edit-label="Artwork name">{piece.title}</h1>
+        <p class="work-description" data-edit={`piece.${piece.slug}.description`} data-edit-label="Artwork description">{piece.description}</p>
         <a href="/contact" class="btn btn-filled">Enquire about this piece</a>
-        <p class="note">Studio visits are available by appointment in Felixstowe, Suffolk.</p>
+        <p class="note" data-edit="gallery.visit-note" data-edit-label="Studio visit note">Studio visits are available by appointment in Felixstowe, Suffolk.</p>
       </div>
     </div>
   </article>

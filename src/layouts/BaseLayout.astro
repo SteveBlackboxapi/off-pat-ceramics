@@ -9,13 +9,14 @@ import Footer from '../components/Footer.astro';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{Astro.props.title || site.name}</title>
+  {Astro.props.noindex && <meta name="robots" content="noindex, nofollow" />}
   <meta name="description" content={Astro.props.description || site.tagline} />
 </head>
 <body>
   <!-- Navigation -->
   <nav class="main-nav" aria-label="Main navigation">
     <div class="nav-container">
-      <a href="/" class="logo">{site.name}</a>
+      <a href="/" class="logo" data-edit="shared.name" data-edit-label="Site name">{site.name}</a>
 
       <!-- Desktop Menu -->
       <div class="nav-links desktop">

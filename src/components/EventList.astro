@@ -9,21 +9,21 @@ const { showPosters = false } = Astro.props;
 
 <div class="event-list" data-event-list>
   {events.map(event => (
-    <article class="event" data-event-end={eventEndDay(event)}>
+    <article class="event" data-event-end-key={`event.${event.slug}.end`} data-event-end={eventEndDay(event)}>
       <p class="event-date">
-        <time datetime={event.data.date.toISOString().slice(0, 10)}>{formatEventDate(event.data.date)}</time>
+        <time data-edit={`event.${event.slug}.start`} data-edit-type="date" data-edit-label="Event start date" datetime={event.data.date.toISOString().slice(0, 10)}>{formatEventDate(event.data.date)}</time>
         {event.data.endDate && eventEndDay(event) !== event.data.date.toISOString().slice(0, 10) && (
-          <> – <time datetime={eventEndDay(event)}>{formatEventDate(event.data.endDate)}</time></>
+          <> – <time data-edit={`event.${event.slug}.end`} data-edit-type="date" data-edit-label="Event end date" datetime={eventEndDay(event)}>{formatEventDate(event.data.endDate)}</time></>
         )}
       </p>
-      <h3>{event.data.title}</h3>
-      <p class="event-location">{event.data.location} · {event.data.time}</p>
-      <p class="event-description">{event.data.description}</p>
+      <h3 data-edit={`event.${event.slug}.title`} data-edit-label="Event name">{event.data.title}</h3>
+      <p class="event-location"><span data-edit={`event.${event.slug}.location`} data-edit-label="Event venue">{event.data.location}</span> · <span data-edit={`event.${event.slug}.hours`} data-edit-label="Opening hours">{event.data.time}</span></p>
+      <p class="event-description" data-edit={`event.${event.slug}.description`} data-edit-label="Event description">{event.data.description}</p>
       <a class="event-link" href="/contact">Ask me about this event →</a>
       {event.data.detailsUrl && <a class="event-link organiser-link" href={event.data.detailsUrl}>Visit the organiser’s website ↗</a>}
       {showPosters && event.data.image && (
-        <a class="event-poster" href={event.data.image} aria-label={`View the full poster for ${event.data.title}`}>
-          <img src={event.data.image} alt={event.data.imageAlt ?? event.data.title} loading="lazy" />
+        <a class="event-poster" data-edit-image-link={`event.${event.slug}.image`} href={event.data.image} aria-label={`View the full poster for ${event.data.title}`}>
+          <img data-edit-image={`event.${event.slug}.image`} data-edit-label="Event poster" src={event.data.image} alt={event.data.imageAlt ?? event.data.title} loading="lazy" />
         </a>
       )}
     </article>

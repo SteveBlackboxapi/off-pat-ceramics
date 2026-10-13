@@ -5,25 +5,25 @@ import { selectedPieces } from '../data/pieces';
 
 <BaseLayout title="Gallery — Off-Pat Ceramics" description="Selected bowls, coastal wall pieces and ceramic details by Pat Todd in Felixstowe.">
   <section class="gallery-hero section-sm container">
-    <p class="eyebrow">Porcelain & stoneware</p>
-    <h1>Selected work</h1>
-    <p class="lead">Coastal scenes, sculptural bowls and the textures in between.</p>
+    <p class="eyebrow" data-edit="gallery.eyebrow" data-edit-label="Work label">Porcelain & stoneware</p>
+    <h1 data-edit="gallery.title" data-edit-label="Work heading">Selected work</h1>
+    <p class="lead" data-edit="gallery.intro" data-edit-label="Work introduction">Coastal scenes, sculptural bowls and the textures in between.</p>
   </section>
   <section class="container gallery-section" aria-label="Selected ceramics">
     <div class="works-grid">
       {selectedPieces.map(piece => (
         <a href={`/gallery/${piece.slug}`} class="work-card">
-          <img src={piece.thumbnail} srcset={`${piece.thumbnail} ${piece.width! / 2}w, ${piece.image} ${piece.width}w`} sizes="(min-width: 1280px) 584px, (min-width: 650px) 46vw, 90vw" alt={piece.alt} width={piece.width} height={piece.height} loading="lazy" decoding="async" />
+          <img data-edit-image={`piece.${piece.slug}.image`} data-edit-label={`${piece.title} — photograph`} src={piece.thumbnail} srcset={`${piece.thumbnail} ${piece.width! / 2}w, ${piece.image} ${piece.width}w`} sizes="(min-width: 1280px) 584px, (min-width: 650px) 46vw, 90vw" alt={piece.alt} width={piece.width} height={piece.height} loading="lazy" decoding="async" />
           <div class="work-info">
-            <p class="work-kind">{piece.kind}</p>
-            <h2>{piece.title} <span aria-hidden="true">↗</span></h2>
+            <p class="work-kind" data-edit={`piece.${piece.slug}.kind`} data-edit-label={`${piece.title} — category`}>{piece.kind}</p>
+            <h2><span data-edit={`piece.${piece.slug}.title`} data-edit-label={`${piece.title} — name`}>{piece.title}</span> <span aria-hidden="true">↗</span></h2>
           </div>
         </a>
       ))}
     </div>
     <div class="gallery-contact">
-      <h2>Something caught your eye?</h2>
-      <p>Contact me with an enquiry, or find out where you can see my work in person.</p>
+      <h2 data-edit="gallery.contact-title" data-edit-label="Enquiry heading">Something caught your eye?</h2>
+      <p data-edit="gallery.contact-text" data-edit-label="Enquiry text">Contact me with an enquiry, or find out where you can see my work in person.</p>
       <a href="/contact" class="btn btn-filled">Contact me</a>
       <a href="/events" class="events-link">Upcoming events →</a>
     </div>

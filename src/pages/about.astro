@@ -12,42 +12,42 @@ import { site } from '../config';
       <div class="about-grid">
         <!-- Your real studio portrait -->
         <div class="about-image fade-up">
-          <img 
-            src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5937.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzU5MzcuanBlZyIsImlhdCI6MTc3OTgwNTEzMSwiZXhwIjoyNzI1ODg1MTMxfQ.itEMqE6AsOnLt4kj2ym837Lbd8888R5-On8pDXbM5o8" 
-            alt="Pat Todd in the studio" 
+          <img data-edit-image="about.portrait" data-edit-label="Pat’s portrait"
+            src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5937.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzU5MzcuanBlZyIsImlhdCI6MTc3OTgwNTEzMSwiZXhwIjoyNzI1ODg1MTMxfQ.itEMqE6AsOnLt4kj2ym837Lbd8888R5-On8pDXbM5o8"
+            alt="Pat Todd in the studio"
             loading="lazy"
           />
         </div>
 
         <div class="about-content fade-up fade-up-delay-1">
           <p class="eyebrow">About</p>
-          <h1>Pat Todd — Off-Pat Ceramics</h1>
-          
+          <h1 data-edit="about.title" data-edit-label="About heading">Pat Todd — Off-Pat Ceramics</h1>
+
           <div class="about-body">
-            <p>
+            <p data-edit="about.paragraph-1" data-edit-label="About paragraph 1">
               I work from my studio in Felixstowe, mainly
               in porcelain and stoneware clays. I produce functional bowls and
               wall pieces which are essentially paintings in ceramic.
             </p>
-            <p>
+            <p data-edit="about.paragraph-2" data-edit-label="About paragraph 2">
               My bowls capture a spontaneous moment in the casting process,
               using porcelain slip to produce fine and delicate forms. The
               bowls reveal ammonite features and are coloured with oxides
               for emphasis.
             </p>
-            <p>
+            <p data-edit="about.paragraph-3" data-edit-label="About paragraph 3">
               Glazes are applied in a way which follows through the
               spontaneity of each piece. Using layers of clay which is textured
               or slip decorated, I create seascapes and landscapes in box
               frames to evoke the coastal regions of Suffolk.
             </p>
-            <p>
+            <p data-edit="about.paragraph-4" data-edit-label="About paragraph 4">
               You can see my work at exhibitions and events, or arrange a visit
               to my studio by getting in touch.
             </p>
           </div>
 
-          <p class="signature">— Pat Todd</p>
+          <p class="signature" data-edit="about.signature" data-edit-label="Signature">— Pat Todd</p>
         </div>
       </div>
     </div>
@@ -56,27 +56,27 @@ import { site } from '../config';
   <section class="practice section-sm">
     <div class="container container-narrow">
       <figure class="texture-study">
-        <img src="/images/selected/ammonite-detail.webp" srcset="/images/selected/ammonite-detail-small.webp 600w, /images/selected/ammonite-detail.webp 1200w" sizes="(min-width: 800px) 300px, 90vw" width="1200" height="1600" alt="Close-up of a pale glazed ammonite spiral revealing the texture of the clay" loading="lazy" />
-        <figcaption>Ammonite forms, layers of glaze and the texture of clay.</figcaption>
+        <img data-edit-image="about.detail" data-edit-label="Detail photograph" src="/images/selected/ammonite-detail.webp" srcset="/images/selected/ammonite-detail-small.webp 600w, /images/selected/ammonite-detail.webp 1200w" sizes="(min-width: 800px) 300px, 90vw" width="1200" height="1600" alt="Close-up of a pale glazed ammonite spiral revealing the texture of the clay" loading="lazy" />
+        <figcaption data-edit="about.detail-caption" data-edit-label="Detail caption">Ammonite forms, layers of glaze and the texture of clay.</figcaption>
       </figure>
       <div class="practice-grid">
         <div>
-          <h3>Materials</h3>
-          <p>
+          <h3 data-edit="about.materials-title" data-edit-label="Materials heading">Materials</h3>
+          <p data-edit="about.materials" data-edit-label="Materials text">
             Porcelain and stoneware clays, with slips, oxides and glazes
             bringing colour and texture to the work.
           </p>
         </div>
         <div>
-          <h3>Process</h3>
-          <p>
+          <h3 data-edit="about.process-title" data-edit-label="Process heading">Process</h3>
+          <p data-edit="about.process" data-edit-label="Process text">
             Porcelain-slip casting captures the spontaneous forms of the
             bowls. Textured and slip-decorated layers of clay build up
             the framed landscapes and seascapes.
           </p>
         </div>
         <div>
-          <h3>Come and see my work</h3>
+          <h3 data-edit="about.visit-title" data-edit-label="Visit heading">Come and see my work</h3>
           <p>
             Find out where I'll be on the <a href="/events">upcoming events</a>
             page, or <a href="/contact">contact me</a> with an enquiry.

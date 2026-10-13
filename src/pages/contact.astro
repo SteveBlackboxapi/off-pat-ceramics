@@ -20,16 +20,16 @@ if (formAction) {
       <div class="contact-grid">
         <!-- Your real studio image -->
         <div class="contact-image">
-          <img 
-            src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5175.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxNzUuanBlZyIsImlhdCI6MTc3OTgwMzk4NCwiZXhwIjoyNzI1ODgzOTg0fQ.N4Aga5idbIc94tiRHELEznFCax5yAVJagihHa8SP5B8" 
-            alt="Off-Pat Ceramics Studio" 
+          <img data-edit-image="contact.image" data-edit-label="Contact photograph"
+            src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/IMG_5175.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvSU1HXzUxNzUuanBlZyIsImlhdCI6MTc3OTgwMzk4NCwiZXhwIjoyNzI1ODgzOTg0fQ.N4Aga5idbIc94tiRHELEznFCax5yAVJagihHa8SP5B8"
+            alt="Off-Pat Ceramics Studio"
             loading="lazy"
           />
         </div>
 
         <div class="contact-content">
-          <h1>Contact me</h1>
-          <p class="lead">
+          <h1 data-edit="contact.title" data-edit-label="Contact heading">Contact me</h1>
+          <p class="lead" data-edit="contact.intro" data-edit-label="Contact introduction">
             For enquiries about my ceramics, where I'll be exhibiting,
             or arranging a studio visit, please get in touch.
           </p>
@@ -69,20 +69,20 @@ if (formAction) {
             <button type="submit" class="btn btn-filled">Send Message</button>
           </form> : (
             <div class="email-contact">
-              <p>
+              <p data-edit="contact.enquiry-text" data-edit-label="Enquiry instructions">
                 Tell me a little about your enquiry. If it's about a particular
                 piece, you can include its name or a link to the photograph.
               </p>
-              <a class="btn btn-filled" href={`mailto:${site.email}`}>
+              <a class="btn btn-filled" data-edit-contact="shared.email" data-edit-format="email" href={`mailto:${site.email}`}>
                 Email Pat
               </a>
             </div>
           )}
           <p class="contact-email">
-            <a href={`mailto:${site.email}`}>{site.email}</a>
+            <a data-edit="shared.email" data-edit-format="email" data-edit-label="Contact email" href={`mailto:${site.email}`}>{site.email}</a>
           </p>
           <p class="contact-phone">
-            <a href={`tel:${site.phone.replace(/\s/g, '').replace(/^0/, '+44')}`}>{site.phone}</a>
+            <a data-edit="shared.phone" data-edit-format="phone" data-edit-label="Phone number" href={`tel:${site.phone.replace(/\s/g, '').replace(/^0/, '+44')}`}>{site.phone}</a>
           </p>
         </div>
       </div>

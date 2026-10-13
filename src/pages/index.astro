@@ -7,36 +7,36 @@ import { site } from '../config';
 <BaseLayout title={site.name} description="Ceramics by Pat Todd in Felixstowe. Explore my work, find upcoming events and get in touch with an enquiry.">
   <section class="hero container">
     <div class="hero-copy">
-      <p class="eyebrow">Pat Todd · Felixstowe, Suffolk</p>
-      <h1>Paintings<br />in clay.</h1>
-      <p class="hero-intro">Porcelain and stoneware from my studio in Felixstowe. See my work, find out where I'll be next, or get in touch.</p>
+      <p class="eyebrow" data-edit="home.eyebrow" data-edit-label="Introduction label">Pat Todd · Felixstowe, Suffolk</p>
+      <h1 data-edit="home.title" data-edit-label="Main heading">Paintings<br />in clay.</h1>
+      <p class="hero-intro" data-edit="home.intro" data-edit-label="Introduction">Porcelain and stoneware from my studio in Felixstowe. See my work, find out where I'll be next, or get in touch.</p>
       <div class="hero-links">
         <a href="#upcoming-events" class="btn btn-filled">Upcoming events</a>
         <a href="/contact" class="plain-link">Contact me →</a>
       </div>
     </div>
     <a class="hero-image" href="/gallery" aria-label="Explore my ceramics">
-      <img src="/images/selected/blue-coast.webp" srcset="/images/selected/blue-coast-small.webp 800w, /images/selected/blue-coast.webp 1600w" sizes="(min-width: 1280px) 625px, (min-width: 850px) 50vw, 90vw" width="1600" height="1200" alt="Blue and cream ceramic seascape with two white sails and a red navigation marker, by Pat Todd" loading="eager" fetchpriority="high" />
-      <span>Explore my work ↗</span>
+      <img data-edit-image="home.image" data-edit-label="Homepage photograph" src="/images/selected/blue-coast.webp" srcset="/images/selected/blue-coast-small.webp 800w, /images/selected/blue-coast.webp 1600w" sizes="(min-width: 1280px) 625px, (min-width: 850px) 50vw, 90vw" width="1600" height="1200" alt="Blue and cream ceramic seascape with two white sails and a red navigation marker, by Pat Todd" loading="eager" fetchpriority="high" />
+      <span data-edit="home.image-caption" data-edit-label="Photograph caption">Explore my work ↗</span>
     </a>
   </section>
 
   <section class="events-section section" id="upcoming-events" aria-labelledby="events-title">
     <div class="container events-grid">
       <div>
-        <p class="eyebrow">Where to find me</p>
-        <h2 id="events-title">Upcoming events</h2>
-        <p class="section-intro">Come and see my ceramics in person.</p>
+        <p class="eyebrow" data-edit="home.events-label" data-edit-label="Events label">Where to find me</p>
+        <h2 id="events-title" data-edit="home.events-title" data-edit-label="Events heading">Upcoming events</h2>
+        <p class="section-intro" data-edit="home.events-intro" data-edit-label="Events introduction">Come and see my ceramics in person.</p>
         <EventList />
         <a class="plain-link all-events" href="/events">Events & studio visits →</a>
       </div>
       <aside class="studio">
-        <p class="eyebrow">A little closer to home</p>
-        <h2>The studio</h2>
-        <p>I'm based in Felixstowe, Suffolk. Studio visits are by appointment — please contact me to arrange a time.</p>
+        <p class="eyebrow" data-edit="home.studio-label" data-edit-label="Studio label">A little closer to home</p>
+        <h2 data-edit="home.studio-title" data-edit-label="Studio heading">The studio</h2>
+        <p data-edit="home.studio-text" data-edit-label="Studio description">I'm based in Felixstowe, Suffolk. Studio visits are by appointment — please contact me to arrange a time.</p>
         <a class="plain-link" href="/contact">Contact me →</a>
-        <p class="studio-address">{site.address.line2}<br />{site.address.city}, {site.address.postcode}</p>
-        <img src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" alt="Map showing the Off-Pat Ceramics studio in Felixstowe" loading="lazy" />
+        <p class="studio-address" data-edit="home.studio-address" data-edit-label="Studio address">{site.address.line2}<br />{site.address.city}, {site.address.postcode}</p>
+        <img data-edit-image="home.map" data-edit-label="Studio map" src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" alt="Map showing the Off-Pat Ceramics studio in Felixstowe" loading="lazy" />
       </aside>
     </div>
   </section>

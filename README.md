@@ -114,6 +114,61 @@ put service-role keys or storage administration credentials in this repo.
 
 ## Editing
 
+Click **Pat Todd** at the end of the footer, or open `/admin`. The private
+editor supports on-page text editing, artwork titles and descriptions, event
+dates/copy/posters, and replacement photographs. Choose a page, then click an
+editable item in its preview. **Save draft** keeps changes private;
+**Publish changes** makes the draft public. The previous published version
+can be restored to a draft before republishing.
+
+Authentication uses Supabase email sign-in links. Only the verified account
+`stevendavidlewis@gmail.com` is authorized, through a fresh database lookup
+in `offpat_private.is_editor()`. A sign-in by any other account confers no
+content or image-library access. No secret/service-role key is shipped.
+
+### One-time email return URL
+
+In Supabase Authentication → URL Configuration, add this **Redirect URL**:
+
+```text
+https://off-pat-ceramics.stevendavidlewis80.workers.dev/admin
+```
+
+On 13 October, a read-only invalid-link check confirmed that this URL was not
+yet allowed: Supabase fell back to `http://localhost:3000`. The connected MCP
+tools do not expose Auth URL configuration. Complete this dashboard setting
+before using the sign-in link; retain any existing URLs. When the public
+domain is approved later, add its `/admin` URL as well.
+
+### Content and uploads
+
+The two `offpat_content` rows hold draft and published overrides. RLS exposes
+only the published row to visitors. The save/publish RPC checks editor access,
+uses a draft version to reject stale saves, and records previous published
+content in `offpat_content_history`. These tables and Storage policies are
+tracked in `supabase/migrations/`.
+
+The editor offers the curated site pictures and the existing Supabase image
+library. New selections are resized in the browser to a maximum 1600-pixel
+long edge, converted to WebP, and given an 800-pixel alternative when useful.
+They use new UUID names under the existing private `images/editor/` prefix.
+Original images are preserved. Uploaded drafts are private; anonymous Storage
+access is limited to files referenced by the published document. The Worker
+serves them at `/media/…`. Signed editor previews last one hour.
+
+The Worker renders published overrides into the static HTML before sending
+it to visitors. Text is escaped, media paths are restricted, and changes need
+no Git commit or rebuild. A last-known published copy is cached for database
+outages, with the built site as a final fallback. `/admin` and draft preview
+responses are not indexed or cached. Same-origin framing allows the editor's
+preview; other sites cannot frame it.
+
+Current supported editing scope: existing page sections and artwork entries,
+including the existing event. Adding/removing whole artwork entries or events
+still requires a source change. The editor does not change page URLs/layouts.
+
+For direct source edits:
+
 | Content | File |
 | --- | --- |
 | Fonts and colours | `src/styles/global.css` |

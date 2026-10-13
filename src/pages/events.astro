@@ -7,12 +7,12 @@ import { site } from '../config';
 <BaseLayout title={`Upcoming events — ${site.name}`} description="Find out where to meet Pat Todd and see Off-Pat Ceramics at upcoming exhibitions and events.">
   <section class="section">
     <div class="container container-narrow">
-      <p class="eyebrow">Meet me & see my work</p>
-      <h1>Upcoming events</h1>
-      <p class="lead">Exhibitions, fairs and opportunities to see my ceramics in person.</p>
+      <p class="eyebrow" data-edit="events.eyebrow" data-edit-label="Events label">Meet me & see my work</p>
+      <h1 data-edit="events.title" data-edit-label="Events heading">Upcoming events</h1>
+      <p class="lead" data-edit="events.intro" data-edit-label="Events introduction">Exhibitions, fairs and opportunities to see my ceramics in person.</p>
       <EventList showPosters />
       <aside>
-        <h2>A visit to the studio</h2>
+        <h2 data-edit="events.visit-title" data-edit-label="Studio visit heading">A visit to the studio</h2>
         <p>My studio is in Felixstowe, Suffolk. Visits are by appointment — <a href="/contact">contact me</a> to arrange a time.</p>
       </aside>
     </div>
