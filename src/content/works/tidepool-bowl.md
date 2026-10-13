@@ -6,8 +6,6 @@ image: '/images/work-tidepool-bowl.jpg'
 imageAlt: 'Wide stoneware bowl with marbled glaze.'
 materials: 'stoneware · celadon'
 dimensions: '18cm diameter'
-price: '£185'
-available: true
 order: 2
 ---
 

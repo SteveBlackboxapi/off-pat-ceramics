@@ -1,4 +1,5 @@
 ---
+draft: true
 title: 'Open Studio Day'
 date: 2026-10-04
 time: '10:00 AM – 5:00 PM'

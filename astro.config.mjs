@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  // Replace with your real domain once it's pointed at Netlify
-  site: 'https://your-domain.com',
+  // Set SITE_URL as a build variable after the production domain is confirmed.
+  site: process.env.SITE_URL || undefined,
 });

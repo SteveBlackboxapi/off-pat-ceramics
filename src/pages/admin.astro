@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Website editor — Off-Pat Ceramics" noindex>
+  <section id="editor-login" class="login-card">
+    <p class="eyebrow">Off-Pat Ceramics</p>
+    <h1>A little behind the scenes.</h1>
+    <p>Sign in to edit the words and photographs on your website.</p>
+    <form id="login-form">
+      <label for="login-email">Your email address</label>
+      <input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com" />
+      <button id="send-code" class="btn btn-filled" type="submit">Email me a code</button>
+      <button id="have-code" class="text-button" type="button">I already have a code</button>
+    </form>
+    <form id="code-form" hidden>
+      <p>Enter the code sent to <strong id="code-email"></strong>.</p>
+      <label for="login-code">Sign-in code</label>
+      <input id="login-code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,10}" minlength="6" maxlength="10" required aria-describedby="login-message" />
+      <button id="verify-code" class="btn btn-filled" type="submit">Sign in</button>
+      <div class="code-actions">
+        <button id="resend-code" class="text-button" type="button">Send another code</button>
+        <button id="change-email" class="text-button" type="button">Change email address</button>
+      </div>
+    </form>
+    <p id="login-message" role="status" aria-live="polite"></p>
+    <p class="small-note">Access is limited to approved editors. Keep this page open while you check your email.</p>
+    <a href="/">← Back to the website</a>
+  </section>
+
+  <section id="editor-app" hidden>
+    <header class="editor-toolbar">
+      <div><p class="eyebrow">Your website</p><h1>Edit, preview, publish.</h1></div>
+      <div class="editor-actions">
+        <button id="save-draft" class="editor-button">Save draft</button>
+        <button id="toggle-preview" class="editor-button">Preview</button>
+        <button id="publish" class="editor-button primary">Publish changes</button>
+        <button id="sign-out" class="text-button">Sign out</button>
+      </div>
+    </header>
+    <p id="editor-status" class="editor-status" role="status" aria-live="polite">Loading your draft…</p>
+    <div id="editor-workspace" class="editor-workspace">
+      <aside id="editor-controls" class="editor-controls">
+        <label for="editor-page">Page</label>
+        <select id="editor-page">
+          <option value="/">Home</option><option value="/gallery">Selected work</option>
+          <option value="/about">About Pat</option><option value="/contact">Contact</option>
+          <option value="/events">Events</option>
+          <optgroup label="Artwork details">
+            <option value="/gallery/blue-coast">Blue coastal wall piece</option>
+            <option value="/gallery/rust-coast">Rust and cream seascape</option>
+            <option value="/gallery/crackle-bowl">Crackle-glazed bowl</option>
+            <option value="/gallery/turquoise-coast">Turquoise coastal wall piece</option>
+            <option value="/gallery/architectural-wall-piece">Architecture in clay</option>
+            <option value="/gallery/ammonite-crackle">Ammonite and crackle glaze</option>
+          </optgroup>
+        </select>
+        <p class="small-note">Click words or a photograph in the page, or choose something below.</p>
+        <label for="editor-field">What would you like to change?</label>
+        <select id="editor-field"></select>
+        <div id="field-controls"></div>
+        <div class="editor-help">
+          <p>Saved drafts are private. <strong>Publish changes</strong> updates the website.</p>
+          <button id="restore-previous" class="text-button">Restore the previous published version</button>
+          <p class="small-note">Restoring creates a draft for you to check first.</p>
+        </div>
+      </aside>
+      <div class="preview-wrap"><iframe id="editor-frame" title="Website preview" src="about:blank"></iframe></div>
+    </div>
+  </section>
+  <dialog id="publish-dialog">
+    <h2>Ready to share your changes?</h2>
+    <p id="publish-summary"></p>
+    <p>Your saved draft will become the version visitors see.</p>
+    <div class="dialog-actions"><button id="cancel-publish" class="editor-button">Keep editing</button><button id="confirm-publish" class="editor-button primary">Publish now</button></div>
+  </dialog>
+  <dialog id="add-work-dialog" aria-labelledby="add-work-heading">
+    <h2 id="add-work-heading">Add a new piece</h2>
+    <p>Choose a photograph and give it a name. You can keep editing before you publish.</p>
+    <form id="add-work-form">
+      <fieldset id="add-work-fields">
+        <label for="new-work-title">Artwork name</label>
+        <input id="new-work-title" name="title" maxlength="200" required />
+        <label for="new-work-image">Photograph</label>
+        <input id="new-work-image" type="file" accept="image/jpeg,image/png,image/webp" />
+        <button id="new-work-library" class="editor-button" type="button">Choose an existing photograph</button>
+        <p class="small-note">JPG, PNG or WebP, up to 30 MB. We resize it for you.</p>
+        <img id="new-work-preview" alt="Selected photograph" hidden />
+        <label for="new-work-kind">Category <span class="optional">(optional)</span></label>
+        <input id="new-work-kind" name="kind" maxlength="200" placeholder="e.g. Bowl or Wall piece" />
+        <label for="new-work-description">Description <span class="optional">(optional)</span></label>
+        <textarea id="new-work-description" name="description" maxlength="5000" rows="3"></textarea>
+        <div class="dialog-actions"><button id="cancel-add-work" type="button" class="editor-button">Cancel</button><button type="submit" class="editor-button primary">Add to draft</button></div>
+      </fieldset>
+      <p id="new-work-message" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+  <dialog id="image-library">
+    <header class="library-heading"><h2>Choose a photograph</h2><button id="close-library" class="editor-button">Close</button></header>
+    <p>Your existing photographs. Choosing one makes an optimised copy for the website.</p>
+    <div id="library-items" class="library-grid"></div>
+  </dialog>
+</BaseLayout>
+<script>import '../cms/editor';</script>
+<style is:global>
+  [hidden] { display: none !important; }
+  .login-card { max-width: 35rem; margin: 4rem auto; padding: 2rem; }
+  .login-card h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; margin: 1rem 0 1.5rem; }
+  .login-card form { margin-top: 2rem; display: grid; gap: 0.8rem; }
+  .login-card input { width: 100%; border: 1px solid var(--color-line-strong); background: white; padding: 0.9rem; }
+  .login-card .btn { justify-self: start; margin-top: 0.5rem; }
+  #login-code { max-width: 18rem; font: inherit; font-size: 1.5rem; letter-spacing: 0.15em; }
+  .code-actions { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; }
+  .code-actions .text-button { padding-left: 0; }
+  #login-message { margin-top: 1rem; }
+  .small-note { font-size: 0.83rem; color: var(--color-text-muted); line-height: 1.55; margin: 0.7rem 0 1.25rem; }
+  .editor-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem 2rem; background: #f9f7f2; }
+  .editor-toolbar h1 { font-size: 1.55rem; margin-top: 0.35rem; }
+  .editor-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; }
+  .editor-button { border: 1px solid #a59b8d; padding: 0.65rem 1rem; background: transparent; cursor: pointer; border-radius: 3px; font: inherit; font-size: 0.9rem; }
+  .editor-button.primary { background: #2c271f; color: white; border-color: #2c271f; }
+  .text-button { border: 0; background: none; font: inherit; text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; font-size: 0.85rem; padding: 0.5rem; }
+  button:disabled { opacity: 0.5; cursor: wait; }
+  .editor-status { padding: 0.8rem 2rem; font-size: 0.9rem; border-block: 1px solid var(--color-line); min-height: 2.7rem; }
+  .editor-status[data-error="true"], #login-message[data-error="true"] { color: #9d281b; }
+  .editor-workspace { display: grid; grid-template-columns: 330px minmax(0, 1fr); align-items: start; }
+  .editor-workspace.preview-only { grid-template-columns: 1fr; }
+  .editor-controls { padding: 1.5rem; height: calc(100vh - 240px); min-height: 550px; overflow-y: auto; border-right: 1px solid var(--color-line); }
+  .editor-controls label { display: block; font-size: 0.83rem; font-weight: bold; margin: 1rem 0 0.5rem; }
+  .editor-controls select, .editor-controls textarea, .editor-controls input { width: 100%; font: inherit; font-size: 0.9rem; background: white; border: 1px solid #a59b8d; border-radius: 2px; padding: 0.7rem; }
+  .editor-controls textarea { resize: vertical; min-height: 140px; line-height: 1.55; }
+  .editor-controls input[type="file"] { padding: 0.6rem 0; border: 0; background: none; }
+  .editor-controls .field-image { width: 100%; max-height: 220px; object-fit: contain; background: #e5dfd3; margin-top: 1rem; }
+  .editor-controls .editor-button { width: 100%; margin-top: 0.7rem; }
+  .editor-help { margin-top: 2rem; border-top: 1px solid var(--color-line); padding-top: 1.4rem; font-size: 0.85rem; }
+  .preview-wrap { min-width: 0; padding: 1rem; background: #dad5cd; }
+  #editor-frame { display: block; border: 0; width: 100%; height: calc(100vh - 250px); min-height: 600px; background: var(--color-bg); }
+  dialog { color: var(--color-text); background: #faf8f4; border: 1px solid var(--color-line); border-radius: 5px; padding: 2rem; max-width: min(90vw, 560px); margin: auto; }
+  dialog::backdrop { background: #0008; }
+  dialog h2 { font-size: 1.65rem; margin-bottom: 1rem; }
+  .dialog-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+  #add-work-dialog { width: 560px; max-height: 90vh; overflow-y: auto; }
+  #add-work-fields { border: 0; padding: 0; margin: 1.3rem 0 0; min-width: 0; }
+  #add-work-fields label { display: block; margin: 1rem 0 0.4rem; font-size: 0.9rem; }
+  #add-work-fields input:not([type="file"]), #add-work-fields textarea { display: block; width: 100%; padding: 0.7rem; border: 1px solid #b8ae9f; background: white; font: inherit; }
+  #new-work-image { display: block; width: 100%; margin-bottom: 0.7rem; }
+  #new-work-preview { width: 100%; max-height: 190px; object-fit: contain; background: #e5dfd3; }
+  #new-work-message { margin-top: 1rem; font-size: 0.9rem; }
+  #new-work-message[data-error="true"] { color: #952c26; }
+  .optional { color: var(--color-text-muted); font-size: 0.8rem; }
+  #image-library { width: 850px; max-width: 92vw; max-height: 85vh; overflow-y: auto; }
+  .library-heading { display: flex; gap: 1rem; align-items: center; justify-content: space-between; }
+  .library-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .library-grid button { background: #fff; border: 1px solid #c2b8a9; padding: 0.5rem; cursor: pointer; font: inherit; font-size: 0.75rem; overflow-wrap: anywhere; }
+  .library-grid img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 0.5rem; }
+  @media (max-width: 850px) { .editor-workspace { grid-template-columns: 1fr; } .editor-controls { height: auto; min-height: 0; } .editor-toolbar { padding: 1rem; } .editor-status { padding: 0.8rem 1rem; } .library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

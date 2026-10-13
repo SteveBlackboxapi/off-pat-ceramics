@@ -1,152 +1,69 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import EventList from '../components/EventList.astro';
 import { site } from '../config';
-import { getCollection } from 'astro:content';
-
-const allEvents = await getCollection('events', ({ data }) => !data.draft);
-const upcomingEvents = allEvents
-  .filter(e => e.data.date >= new Date())
-  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
-  .slice(0, 3);
 ---
 
-<BaseLayout
-  title={site.name}
-  description="Porcelain & Stoneware • Paintings in Clay — Felixstowe"
->
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-image">
-      <img 
-        src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/hero-bowl.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvaGVyby1ib3dsLmpwZyIsImlhdCI6MTc3OTc5MTI3NywiZXhwIjoyNzI1ODcxMjc3fQ.8Vv94-evHQq0yImwIVOPx5E9Y2Hlw95eRhHNL5SspWw" 
-        alt="Saltglazed pouring bowl, 2024" 
-        loading="eager" 
-      />
-    </div>
-  </section>
-
-  <div class="main-content">
-    <div class="container">
-      <div class="two-column">
-
-        <!-- Upcoming Events -->
-        <div class="events-column">
-          <h2 class="section-title">Upcoming Events</h2>
-          
-          {upcomingEvents.length > 0 ? (
-            upcomingEvents.map((event, index) => (
-              <div class={`event-item ${index < upcomingEvents.length - 1 ? 'event-item-border' : ''}`}>
-                <p class="event-date">
-                  {event.data.date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
-                </p>
-                <p class="event-title">{event.data.title}</p>
-                <p class="event-info">
-                  {event.data.time} • {event.data.location}
-                </p>
-                {event.data.spotsLeft && (
-                  <p class="spots">{event.data.spotsLeft} spots left</p>
-                )}
-              </div>
-            ))
-          ) : (
-            <p>No upcoming events at the moment.</p>
-          )}
-        </div>
-
-        <!-- The Studio -->
-        <div class="studio-column">
-          <h2 class="section-title">The Studio</h2>
-          <div class="studio-info">
-            <p><strong>Off-Pat Ceramics</strong><br />
-            Felixstowe, Suffolk</p>
-            
-            <p>
-              Studio visits by appointment only.<br />
-              Please get in touch to arrange a visit.
-            </p>
-            
-            <p>
-              <a href={`mailto:${site.email}`}>{site.email}</a><br />
-              {site.phone && <a href={`tel:${site.phone}`}>{site.phone}</a>}
-            </p>
-
-            <p class="studio-address">
-              3 Penfold Road<br />
-              Felixstowe, Suffolk<br />
-              IP11 7BP
-            </p>
-
-            <div class="studio-map">
-              <img 
-                src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" 
-                alt="Map to Off-Pat Ceramics studio" 
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </div>
-
+<BaseLayout title={site.name} description="Ceramics by Pat Todd in Felixstowe. Explore my work, find upcoming events and get in touch with an enquiry.">
+  <section class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow" data-edit="home.eyebrow" data-edit-label="Introduction label">Pat Todd · Felixstowe, Suffolk</p>
+      <h1 data-edit="home.title" data-edit-label="Main heading">Paintings<br />in clay.</h1>
+      <p class="hero-intro" data-edit="home.intro" data-edit-label="Introduction">Porcelain and stoneware from my studio in Felixstowe. See my work, find out where I'll be next, or get in touch.</p>
+      <div class="hero-links">
+        <a href="#upcoming-events" class="btn btn-filled">Upcoming events</a>
+        <a href="/contact" class="plain-link">Contact me →</a>
       </div>
     </div>
-  </div>
+    <a class="hero-image" href="/gallery" aria-label="Explore my ceramics">
+      <img data-edit-image="home.image" data-edit-label="Homepage photograph" src="/images/selected/blue-coast.webp" srcset="/images/selected/blue-coast-small.webp 800w, /images/selected/blue-coast.webp 1600w" sizes="(min-width: 1280px) 625px, (min-width: 850px) 50vw, 90vw" width="1600" height="1200" alt="Blue and cream ceramic seascape with two white sails and a red navigation marker, by Pat Todd" loading="eager" fetchpriority="high" />
+      <span data-edit="home.image-caption" data-edit-label="Photograph caption">Explore my work ↗</span>
+    </a>
+  </section>
+
+  <section class="events-section section" id="upcoming-events" aria-labelledby="events-title">
+    <div class="container events-grid">
+      <div>
+        <p class="eyebrow" data-edit="home.events-label" data-edit-label="Events label">Where to find me</p>
+        <h2 id="events-title" data-edit="home.events-title" data-edit-label="Events heading">Upcoming events</h2>
+        <p class="section-intro" data-edit="home.events-intro" data-edit-label="Events introduction">Come and see my ceramics in person.</p>
+        <EventList />
+        <a class="plain-link all-events" href="/events">Events & studio visits →</a>
+      </div>
+      <aside class="studio">
+        <p class="eyebrow" data-edit="home.studio-label" data-edit-label="Studio label">A little closer to home</p>
+        <h2 data-edit="home.studio-title" data-edit-label="Studio heading">The studio</h2>
+        <p data-edit="home.studio-text" data-edit-label="Studio description">I'm based in Felixstowe, Suffolk. Studio visits are by appointment — please contact me to arrange a time.</p>
+        <a class="plain-link" href="/contact">Contact me →</a>
+        <p class="studio-address" data-edit="home.studio-address" data-edit-label="Studio address">{site.address.line2}<br />{site.address.city}, {site.address.postcode}</p>
+        <img data-edit-image="home.map" data-edit-label="Studio map" src="https://fgxfkyzvkpgrsphgjgxf.supabase.co/storage/v1/object/sign/images/map.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTI2OGMwYy02NjVlLTQ4YTEtODFlYy0zYTcwY2YwZjdiZDIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbWFwLmpwZyIsImlhdCI6MTc3OTc5Mjg2MywiZXhwIjozMDQxMjMyODYzfQ.f1FH3w0ILKwAEP2g26iEb38LcBvDARZAfBRG3LBwMgE" alt="Map showing the Off-Pat Ceramics studio in Felixstowe" loading="lazy" />
+      </aside>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .hero {
-    position: relative;
-    height: 40vh;
-    min-height: 280px;
-    overflow: hidden;
-  }
-  .hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 40%;
-  }
-
-  .main-content {
-    padding: 1.5rem 0 3rem;
-    background: var(--color-bg);
-  }
-
-  .two-column {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  @media (min-width: 900px) {
-    .hero {
-      height: 68vh;
-      min-height: 580px;
-    }
-    .main-content {
-      padding: 4rem 0 5rem;
-    }
-    .two-column {
-      grid-template-columns: 1fr 1fr;
-      gap: 7rem;
-    }
-  }
-
-  .section-title {
-    font-family: var(--font-display);
-    font-size: 1.35rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 1.8rem;
-  }
-
-  .event-item {
-    margin-bottom: 1.8rem;
-  }
-
-  .event-item-border {
-    padding-bottom: 1.6rem;
-    border-bottom: 1px solid var(--color-line);
+  .hero { display: grid; gap: 2.5rem; padding-block: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .hero-copy h1 { font-size: clamp(3.5rem, 7vw, 6rem); line-height: 1; margin: 1.5rem 0; letter-spacing: -0.045em; }
+  .hero-intro { max-width: 39ch; color: var(--color-text-muted); font-size: 1.1rem; }
+  .hero-links { display: flex; flex-wrap: wrap; align-items: center; gap: 1.4rem; margin-top: 2rem; }
+  .hero-links .btn { padding: 1rem 1.25rem; letter-spacing: 0.06em; font-size: 0.8rem; }
+  .plain-link { display: inline-block; text-decoration: underline; text-underline-offset: 0.3em; }
+  .hero-image { position: relative; display: block; }
+  .hero-image img { width: 100%; height: auto; }
+  .hero-image span { display: block; margin-top: 0.75rem; text-align: right; font-size: 0.85rem; }
+  .events-section { border-top: 1px solid var(--color-line); scroll-margin-top: 6rem; }
+  .events-grid { display: grid; gap: 3rem; }
+  .events-grid h2 { font-size: clamp(2rem, 4vw, 3rem); margin: 0.8rem 0 1rem; }
+  .section-intro { margin-bottom: 2rem; color: var(--color-text-muted); }
+  .all-events { margin-top: 1rem; }
+  .studio { background: var(--color-surface); padding: clamp(1.5rem, 4vw, 2.5rem); align-self: start; }
+  .studio h2 { font-size: 1.7rem; }
+  .studio .plain-link { margin-top: 1rem; }
+  .studio-address { margin-block: 2rem 1rem; font-size: 0.9rem; }
+  .studio img { width: 100%; }
+  @media (min-width: 850px) {
+    .hero { grid-template-columns: 0.9fr 1.1fr; gap: 4rem; }
+    .events-grid { grid-template-columns: 1.5fr 1fr; gap: clamp(3rem, 7vw, 6rem); }
   }
 </style>

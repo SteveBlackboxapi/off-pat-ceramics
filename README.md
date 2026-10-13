@@ -1,294 +1,223 @@
-# Your Studio — site
+# Off-Pat Ceramics
 
-A clean, editorial Astro site for a ceramic studio (or any maker-style brand).
-Designed to be deployed to Netlify and edited in markdown.
+Pat Todd’s ceramics portfolio, upcoming events and contact enquiries. Built
+with Astro; hosted on Cloudflare Workers with Static Assets. No shop,
+checkout, prices or online booking.
 
----
+## Current status
 
-## 1 · Quick start (local)
+- Cloudflare preview: https://off-pat-ceramics.stevendavidlewis80.workers.dev
+- Preview source branch: `codex/cloudflare-migration` (draft PR #1).
+- Existing public website: https://offpatceramics.wordpress.com/
+- Former staging copy: https://off-pat-ceramics.netlify.app/
+- GoDaddy/domain work is deferred. Keep WordPress live until Steven approves
+  the new design and explicitly authorizes the public switch.
+- Typography: Arial throughout. Photos, upcoming appearances and enquiries
+  are the priorities.
 
-You need [Node.js 20+](https://nodejs.org) installed.
+## Development and preview deployment
 
-```bash
-npm install
+Use Node.js 22, as declared in `.node-version`.
+
+```sh
+npm ci
 npm run dev
-```
-
-The site will be at `http://localhost:4321`. Edits to any file
-hot-reload automatically.
-
-To build for production:
-
-```bash
 npm run build
+npx wrangler deploy --dry-run
 ```
 
-The static site is output to `dist/`. That's what Netlify deploys.
+Static output is in `dist/`. For authenticated CLI deployment use
+`npm run deploy`. No Supabase API credentials are required to build this site.
 
----
+Cloudflare Workers Builds settings:
 
-## 2 · Deploy to Netlify
+| Setting | Value |
+| --- | --- |
+| Worker | `off-pat-ceramics` |
+| Branch during design review | `codex/cloudflare-migration` |
+| Root | Repository root |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
 
-You've got two routes — pick whichever is easier.
+The first deployment used a temporary build command that checked out the
+migration branch. On 12 October 2026, Steven confirmed the settings above in
+the Cloudflare dashboard: production branch `codex/cloudflare-migration`,
+build command `npm run build`, deploy command `npx wrangler deploy`, and root
+directory `/`. The temporary checkout command has been removed. Pushes to
+this branch now target the workers.dev preview. Do not merge to `main` or
+change the public domain as part of preview design work.
 
-### A) Drag-and-drop (simplest)
+`wrangler.jsonc` configures static assets, clean URLs and the custom 404.
+`public/_headers` contains the security headers. Set `SITE_URL` to the final
+HTTPS origin only when the public domain has been confirmed.
 
-1. Run `npm run build` locally.
-2. Go to [app.netlify.com/drop](https://app.netlify.com/drop).
-3. Drag the `dist/` folder onto the page.
-4. Done — you'll get a `*.netlify.app` URL immediately.
+If Astro builds successfully but Wrangler's Worker-name validation receives
+`504 Gateway Timeout` from Cloudflare's `/workers/services/off-pat-ceramics`
+API, the deployment request timed out. This does not establish a Worker-name
+mismatch. Retry the failed build before changing the Worker name, build
+commands or token permissions. The 12 October 2026 deployment encountered
+this timeout after successfully building all 21 pages.
 
-This is great for the first deploy, but every update means
-re-building locally and re-dragging.
+## Upcoming events
 
-### B) Git-based (recommended for ongoing edits)
-
-1. Push this folder to a GitHub / GitLab / Bitbucket repo.
-2. In Netlify, click **Add new site → Import an existing project**.
-3. Pick your repo. Netlify auto-detects Astro and reads `netlify.toml`,
-   so you don't need to configure anything.
-4. Click **Deploy**. Every `git push` to your main branch redeploys
-   automatically. Pull requests get preview URLs.
-
-### Connecting your existing domain
-
-In your Netlify site dashboard:
-
-1. **Domain management → Add a domain you already own**, enter it.
-2. Netlify gives you DNS records to add. You have two options:
-   - **Easiest**: change your domain's nameservers to Netlify's
-     (Netlify shows you which ones). Netlify then handles all DNS.
-   - **Keep your existing DNS provider**: add a `CNAME` (or `A` for
-     apex domains) pointing at Netlify, as shown in their instructions.
-3. Wait for DNS to propagate (usually a few minutes, sometimes a few
-   hours). HTTPS certificate is provisioned automatically by Netlify.
-
-That's it — no server, no maintenance, no hosting fees on the free tier.
-
----
-
-## 3 · Adding content
-
-This is the whole point of using Astro — every piece of content is a
-markdown file. Add a file, rebuild, it's on the site.
-
-### Adding a new event
-
-Create `src/content/events/your-event.md`:
-
-```markdown
----
-title: 'Sunset Throwing Session'
-date: 2026-07-04
-time: '5:00 PM – 8:00 PM'
-location: 'Your Studio, Coastal Britain'
-image: '/images/sunset-event.jpg'
-imageAlt: 'Studio wheel at sunset.'
-description: |
-  A relaxed evening at the wheel with the sea outside.
-reserveUrl: 'https://yourbookingplatform.com/sunset-session'
-price: '£90'
-skillLevel: 'All levels welcome.'
-whatToBring: 'Just yourself.'
-cancellationPolicy: 'Full refund 7 days prior.'
-spotsLeft: 6
-featured: false       # set true to make it the big featured event on the homepage
-draft: false          # set true to hide while you're still editing
----
-
-Optional longer write-up of the event goes here. This bit shows up
-on the homepage too.
-```
-
-Save the file. The homepage will automatically show whichever event
-has the soonest upcoming date. Past events disappear automatically.
-
-### Adding a journal post
-
-Create `src/content/journal/your-post-title.md`:
-
-```markdown
----
-title: 'A note on glaze'
-subtitle: 'Why I stopped trying to control it'
-date: 2026-05-20
-image: '/images/glaze-note.jpg'
-imageAlt: 'Glaze swatches on test tiles.'
-excerpt: |
-  Short blurb that shows up on the journal index page.
-tags: ['glaze', 'process']
-draft: false
----
-
-# Heading
-
-Your post body, in markdown. You can use **bold**, _italics_, links,
-lists, blockquotes, images — anything markdown supports.
-
-## Subheading
-
-More writing.
-```
-
-The filename becomes the URL slug, so `your-post-title.md` →
-`/journal/your-post-title`.
-
-### Adding a gallery piece
-
-Create `src/content/works/your-piece.md`:
-
-```markdown
----
-title: 'Headland Bowl No. 2'
-year: 2026
-series: 'Tidelines'        # used to group pieces under a heading
-image: '/images/headland-no-2.jpg'
-imageAlt: 'A small bowl with a coastal glaze.'
-materials: 'stoneware · celadon'
-dimensions: '16cm diameter'
-price: '£165'
-available: true
-order: 5                   # lower numbers appear first
-draft: false
----
-
-Short description of the piece.
-```
-
----
-
-## 4 · Customising the brand
-
-Everything brand-specific lives in **one file**: `src/config.ts`.
-Open it, edit the values, save. Changes propagate to the header,
-footer, contact page, SEO defaults, and so on.
-
-```ts
-export const site = {
-  name: 'Your Studio',
-  tagline: 'Hand-thrown ceramics',
-  location: 'Coastal Britain',
-  email: 'hello@yourstudio.com',
-  // ...etc
-};
-```
-
-### Colours and fonts
-
-Open `src/styles/global.css`. The first block (`:root`) is all the
-design tokens:
-
-```css
-:root {
-  --color-bg: #EDE7DC;      /* page background */
-  --color-text: #2A241E;    /* main text colour */
-  --color-accent: #C25A3E;  /* terracotta — buttons, hover, accents */
-  /* ... */
-}
-```
-
-Change those and the entire site re-themes. Same for fonts — swap
-`--font-display` and `--font-body` for any two Google Fonts (and
-update the `<link>` tag in `src/layouts/BaseLayout.astro` to load them).
-
----
-
-## 5 · Connecting Supabase for images (later)
-
-You don't need to do this on day one. Local images under `public/images/`
-work fine and ship with the site.
-
-When you're ready, two routes:
-
-### Easiest: just paste URLs
-
-In any markdown file, change:
+Homepage and `/events` share `src/components/EventList.astro`. Add a Markdown
+file in `src/content/events/` with confirmed details from Pat, for example:
 
 ```yaml
-image: '/images/workshop.jpg'
+---
+title: 'Confirmed exhibition name'
+date: 2027-04-10
+endDate: 2027-04-11
+time: '10am–4pm'
+location: 'Confirmed venue and town'
+description: 'A short description supplied by Pat.'
+draft: true
+---
 ```
 
-to:
+Those example dates are not an announced event. Set `draft: false` only when
+the real title, dates and venue are confirmed, then rebuild. `endDate` is
+optional. Events remain visible through their final day in Europe/London,
+including events that have already started. The browser also hides expired
+entries between deployments. The three old sample events remain drafts.
+The Suffolk Craft Society Winter Show (6–22 November 2026) is transcribed from
+the supplied poster, including the earlier closing time on its final day.
 
-```yaml
-image: 'https://yourproject.supabase.co/storage/v1/object/public/images/workshop.jpg'
+## Enquiries
+
+`src/config.ts` holds Pat’s email address. The default contact page links to
+her email app through **Email Pat**. Gallery enquiries link to `/contact`.
+
+An optional `PUBLIC_CONTACT_FORM_ACTION` build variable can enable an HTTPS
+form service. The endpoint must accept the `name`, `email`, `subject` and
+`message` fields and provide its own validation, spam protection and delivery
+confirmation. Never put a secret key in this public URL. Without a configured
+endpoint the site shows the email link, not an unhandled form.
+
+## Photographs
+
+Supabase project: `fgxfkyzvkpgrsphgjgxf` (**OFF PAT**).
+The `images` storage bucket is private. Existing selected photos are served
+using signed URLs already present in the page/content source. Preserve bucket
+privacy; do not change access policies just to add a photo.
+
+The October 2026 selection supplied in chat is optimised as WebP under
+`public/images/selected/`, with responsive small variants. These derivatives
+are served with the preview; the originals are unchanged. See
+`docs/photo-selection.md` for the choices, source filenames and sizes.
+Gallery data lives in `src/data/pieces.ts`; its captions are descriptive.
+
+Upload additional pictures to this project, choose the photos to publish, and
+add their signed URLs and accurate alt text to the appropriate pages. An
+upload alone does not automatically publish an image in the gallery. Do not
+put service-role keys or storage administration credentials in this repo.
+
+## Editing
+
+Click **Pat Todd** at the end of the footer, or open `/admin`. The private
+editor supports on-page text editing, artwork titles and descriptions, event
+dates/copy/posters, and replacement photographs. Choose a page, then click an
+editable item in its preview. **Save draft** keeps changes private;
+**Publish changes** makes the draft public. The previous published version
+can be restored to a draft before republishing.
+
+On **Selected work**, the dashed **+ Add work** tile opens a form for a name,
+photograph, optional category and description. Upload a photograph or choose
+one from the image library, then choose **Add to draft**. The new tile and its
+artwork detail page stay private until publishing. Select any field on an
+added piece to edit its full details or remove it from the draft. The plus
+tile is hidden in clean preview and never appears on the public website.
+
+Authentication uses a Supabase email code entered directly in the editor.
+Only a verified account allowed by `offpat_private.is_editor()` is authorized,
+through a fresh database lookup. A sign-in by any other account confers no
+content or image-library access. No secret/service-role key is shipped.
+
+### One-time email template setup
+
+In the OFF PAT project's Supabase Authentication → Email Templates, set both
+**Magic Link** and **Confirm signup** to use this subject:
+
+```text
+Your Off-Pat Ceramics sign-in code
 ```
 
-That's it — Astro doesn't care whether the URL is local or remote.
+Use the body in `supabase/templates/editor-code.html` for both. It includes
+`{{ .Token }}` to send the one-time code. Confirm signup covers the first login
+for a new or unconfirmed account; Magic Link covers later sign-ins. These are
+project-wide templates. The connected MCP tools cannot change Auth templates,
+so the dashboard step remains necessary before the first code request.
 
-### More involved: dynamic gallery from Supabase
+In `/admin`, choose **Email me a code**, check the email, then type the code and
+choose **Sign in**. Resends have a 60-second cooldown; the server also enforces
+its own rate limits and expiry. Verification uses `verifyOtp` with `type:
+'email'`. No code is placed in a URL or stored by the application.
 
-If you want the gallery to query Supabase directly (so adding a row in
-Supabase shows a new piece on the site without redeploying), that
-requires switching parts of the site from static to server-rendered.
-That's a non-trivial change — happy to walk you through it when you're
-ready.
+Code sign-in needs no redirect URL and supersedes the earlier localhost
+redirect troubleshooting. Retain existing Auth URL settings for other flows.
+Email delivery and a real signed-in editing/upload check still need Steven's
+first login after the templates are saved.
 
----
+### Content and uploads
 
-## 6 · Project structure
+The two `offpat_content` rows hold draft and published overrides. RLS exposes
+only the published row to visitors. The save/publish RPC checks editor access,
+uses a draft version to reject stale saves, and records previous published
+content in `offpat_content_history`. These tables and Storage policies are
+tracked in `supabase/migrations/`.
 
-```
-your-studio-site/
-├── public/                 ← static files served as-is
-│   ├── favicon.svg
-│   └── images/             ← your photos
-├── src/
-│   ├── config.ts           ← brand settings (edit this first!)
-│   ├── layouts/
-│   │   └── BaseLayout.astro
-│   ├── components/
-│   │   ├── Header.astro
-│   │   └── Footer.astro
-│   ├── pages/              ← every file here becomes a page
-│   │   ├── index.astro          → /
-│   │   ├── gallery.astro        → /gallery
-│   │   ├── about.astro          → /about
-│   │   ├── journal.astro        → /journal
-│   │   ├── journal/[...slug].astro  → /journal/post-name (dynamic)
-│   │   ├── contact.astro        → /contact
-│   │   └── 404.astro
-│   ├── content/            ← markdown content
-│   │   ├── config.ts            ← schemas (do not delete)
-│   │   ├── events/
-│   │   ├── journal/
-│   │   └── works/
-│   └── styles/
-│       └── global.css
-├── astro.config.mjs
-├── netlify.toml
-├── package.json
-└── tsconfig.json
-```
+The editor offers the curated site pictures and the existing Supabase image
+library. New selections are resized in the browser to a maximum 1600-pixel
+long edge, converted to WebP, and given an 800-pixel alternative when useful.
+They use new UUID names under the existing private `images/editor/` prefix.
+Original images are preserved. Uploaded drafts are private; anonymous Storage
+access is limited to files referenced by the published document. The Worker
+serves them at `/media/…`. Signed editor previews last one hour.
 
----
+The Worker renders published overrides into the static HTML before sending
+it to visitors. Text is escaped, media paths are restricted, and changes need
+no Git commit or rebuild. A last-known published copy is cached for database
+outages, with the built site as a final fallback. `/admin` and draft preview
+responses are not indexed or cached. Same-origin framing allows the editor's
+preview; other sites cannot frame it.
 
-## 7 · Common edits — quick reference
+Added artwork is stored alongside existing overrides, using an immutable
+`work-<UUID>` slug and flat `piece.<slug>.*` fields. Its image remains a
+top-level value so the existing Storage policies also protect new uploads.
+The Worker renders added gallery cards and serves detail pages from a shared
+template only when the piece exists in published content. No database schema
+change or rebuild is needed when an editor adds a piece.
 
-| Want to change… | Edit this |
-|---|---|
-| Studio name, location, email, social | `src/config.ts` |
-| Site colours / fonts | `src/styles/global.css` (`:root` block at the top) |
-| Header logo / nav | `src/components/Header.astro` |
-| Footer text / links | `src/components/Footer.astro` |
-| Homepage layout | `src/pages/index.astro` |
-| Add a page | Create `src/pages/new-page.astro` |
-| Add to nav menu | Edit the `nav` array in `src/config.ts` |
-| About-page bio | `src/pages/about.astro` |
-| Contact form options | `src/pages/contact.astro` |
+Existing page sections and the existing event remain editable. Adding whole
+events or removing the original curated artwork still requires a source
+change. The editor does not change the overall page layout.
 
----
+Run `npm run build && node --test tests/*.test.ts` to check content validation,
+login handling and the public Worker draft/publish lifecycle with local mock
+content. These checks do not contact the live database or send sign-in emails.
 
-## 8 · Form submissions
+For direct source edits:
 
-The contact form uses **Netlify Forms** — submissions appear in your
-Netlify dashboard under **Forms** with no backend needed. The free
-tier includes 100 submissions per month. Spam protection is built-in
-(there's a hidden honeypot field already configured).
+| Content | File |
+| --- | --- |
+| Fonts and colours | `src/styles/global.css` |
+| Name, email, navigation | `src/config.ts` |
+| Header and mobile menu | `src/layouts/BaseLayout.astro` |
+| Homepage | `src/pages/index.astro` |
+| Events | `src/content/events/*.md` |
+| Gallery photos and captions | `src/data/pieces.ts` |
+| Gallery layout | `src/pages/gallery.astro` and `src/pages/gallery/[...slug].astro` |
+| Biography | `src/pages/about.astro` |
+| Enquiries | `src/pages/contact.astro` |
 
-To get email notifications when someone submits, configure them in
-**Site settings → Forms → Form notifications** in Netlify.
+## Retiring old hosting
 
----
+Netlify is independent of the Cloudflare preview. Export any Netlify Forms
+submissions worth keeping before deleting that project. Deleting Netlify does
+not remove WordPress, the GitHub repository or the Supabase photographs.
 
-That's everything. Anything unclear, ask.
+The public WordPress site and GoDaddy DNS stay unchanged during design review.
+After design approval, connect the confirmed domain to Cloudflare, preserving
+existing email DNS records. Verify HTTPS, images, navigation and enquiries
+before retiring WordPress. Account deletion and subscription cancellation are
+separate decisions.

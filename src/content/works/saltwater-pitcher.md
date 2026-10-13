@@ -6,8 +6,6 @@ image: '/images/work-saltwater-pitcher.jpg'
 imageAlt: 'Pale celadon pitcher with a twisted handle.'
 materials: 'stoneware · celadon'
 dimensions: '22cm tall'
-price: '£220'
-available: true
 order: 4
 ---
 

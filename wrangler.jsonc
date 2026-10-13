@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "off-pat-ceramics",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-12",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/*", "!/_astro/*", "!/images/*", "!/favicon.svg"],
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

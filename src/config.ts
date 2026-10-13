@@ -21,14 +21,14 @@ export const site = {
     newsletter: '#',
   },
 
-  footerStrap: 'Hand-thrown porcelain and stoneware from Felixstowe',
+  footerStrap: 'Porcelain and stoneware by Pat Todd',
 };
 
 // Navigation
 export const nav = [
   { label: 'Home', href: '/' },
+  { label: 'Events', href: '/events' },
   { label: 'Work', href: '/gallery' },
-  { label: 'Journal', href: '/journal' },
-  { label: 'Studio', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'About Pat', href: '/about' },
+  { label: 'Contact me', href: '/contact' },
 ];

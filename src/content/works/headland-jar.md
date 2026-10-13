@@ -6,8 +6,6 @@ image: '/images/work-headland-jar.jpg'
 imageAlt: 'Small lidded stoneware jar with a botanical motif.'
 materials: 'stoneware · matte cream glaze'
 dimensions: '12cm tall'
-price: '£140'
-available: true
 order: 3
 ---
 

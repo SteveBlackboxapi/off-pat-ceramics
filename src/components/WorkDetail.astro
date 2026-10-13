@@ -1,0 +1,28 @@
+---
+import type { Piece } from '../data/pieces';
+interface Props { piece: Piece; }
+const { piece } = Astro.props;
+---
+  <article class="work-detail container">
+    <a href="/gallery" class="back-link">← Back to selected work</a>
+    <div class="work-grid">
+      <img data-edit-image={`piece.${piece.slug}.image`} data-edit-label="Artwork photograph" class="work-image" src={piece.image} srcset={piece.thumbnail ? `${piece.thumbnail} ${piece.width! / 2}w, ${piece.image} ${piece.width}w` : undefined} sizes="(min-width: 1280px) 610px, (min-width: 900px) 50vw, 90vw" alt={piece.alt} width={piece.width} height={piece.height} />
+      <div class="work-info">
+        <p class="eyebrow" data-edit={`piece.${piece.slug}.kind`} data-edit-label="Category">{piece.kind}</p>
+        <h1 data-edit={`piece.${piece.slug}.title`} data-edit-label="Artwork name">{piece.title}</h1>
+        <p class="work-description" data-edit={`piece.${piece.slug}.description`} data-edit-label="Artwork description">{piece.description}</p>
+        <a href="/contact" class="btn btn-filled">Enquire about this piece</a>
+        <p class="note" data-edit="gallery.visit-note" data-edit-label="Studio visit note">Studio visits are available by appointment in Felixstowe, Suffolk.</p>
+      </div>
+    </div>
+  </article>
+<style>
+  .work-detail { padding-block: 3rem 5rem; }
+  .back-link { display: inline-block; margin-bottom: 2rem; text-decoration: underline; text-underline-offset: 0.2em; }
+  .work-grid { display: grid; gap: 2.5rem; align-items: start; }
+  .work-image { width: 100%; height: auto; }
+  .work-info h1 { font-size: clamp(2rem, 4vw, 3rem); margin: 1rem 0 1.5rem; }
+  .work-description { margin-bottom: 2rem; }
+  .note { font-size: 0.9rem; color: var(--color-text-muted); margin-top: 1.5rem; }
+  @media (min-width: 900px) { .work-grid { grid-template-columns: 1.2fr 1fr; gap: 4rem; } }
+</style>

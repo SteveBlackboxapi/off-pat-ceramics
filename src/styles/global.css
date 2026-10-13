@@ -16,8 +16,8 @@
   --color-line-strong: rgba(42, 36, 30, 0.28);
 
   /* Typography */
-  --font-display: 'Fraunces', 'Cormorant Garamond', 'Times New Roman', serif;
-  --font-body: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-display: Arial, Helvetica, sans-serif;
+  --font-body: Arial, Helvetica, sans-serif;
 
   /* Layout */
   --max-width: 1280px;
@@ -114,12 +114,10 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.08;
   letter-spacing: -0.015em;
   color: var(--color-text);
-  font-variation-settings: 'opsz' 144, 'SOFT' 50;
 }
 
 h1 {
   font-size: clamp(2.75rem, 7vw, 5.5rem);
-  font-variation-settings: 'opsz' 144, 'SOFT' 30;
 }
 
 h2 {
@@ -216,7 +214,8 @@ p {
 }
 
 .btn-filled {
-  background: var(--color-accent);
+  border-color: var(--color-text);
+  background: var(--color-text);
   color: var(--color-bg);
 }
 

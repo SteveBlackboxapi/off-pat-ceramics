@@ -1,0 +1,2 @@
+# Astro's intermediate server modules are not website assets.
+**/*.mjs

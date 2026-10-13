@@ -8,9 +8,15 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "preview:cloudflare": "wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.117.3",
     "astro": "^4.16.18"
+  },
+  "devDependencies": {
+    "wrangler": "4.149.0"
   }
 }
