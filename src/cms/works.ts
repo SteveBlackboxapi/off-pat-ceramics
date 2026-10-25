@@ -46,6 +46,7 @@ function escape(value: string): string {
 }
 // The same card markup is used in the authenticated preview and public Worker.
 // Every value is escaped; image paths have already passed content validation.
+export const workArrowHTML = '<svg class="work-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg>';
 export function workCardHTML(work: AddedWork, previewImage?: string): string {
   const prefix = `piece.${work.slug}.`, image = work.image;
   const src = previewImage ?? image.thumbnail ?? image.src;
@@ -53,5 +54,5 @@ export function workCardHTML(work: AddedWork, previewImage?: string): string {
   return `<a href="/gallery/${work.slug}" class="work-card" data-custom-work="${work.slug}">
     <img data-edit-image="${prefix}image" data-edit-label="${escape(work.title)} — photograph" src="${escape(src)}"${srcset} sizes="(min-width: 1280px) 584px, (min-width: 650px) 46vw, 90vw" alt="${escape(image.alt)}" width="${image.width}" height="${image.height}" loading="lazy" decoding="async">
     <div class="work-info"><p class="work-kind" data-edit="${prefix}kind" data-edit-label="${escape(work.title)} — category">${escape(work.kind)}</p>
-    <h2><span data-edit="${prefix}title" data-edit-label="${escape(work.title)} — name">${escape(work.title)}</span> <span aria-hidden="true">↗</span></h2></div></a>`;
+    <h2><span data-edit="${prefix}title" data-edit-label="${escape(work.title)} — name">${escape(work.title)}</span> ${workArrowHTML}</h2></div></a>`;
 }
