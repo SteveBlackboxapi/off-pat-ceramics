@@ -1,4 +1,5 @@
 ---
+import DiagonalArrow from '../components/DiagonalArrow.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventList from '../components/EventList.astro';
 import { site } from '../config';
@@ -17,7 +18,7 @@ import { site } from '../config';
     </div>
     <a class="hero-image" href="/gallery" aria-label="Explore my ceramics">
       <img data-edit-image="home.image" data-edit-label="Homepage photograph" src="/images/selected/blue-coast.webp" srcset="/images/selected/blue-coast-small.webp 800w, /images/selected/blue-coast.webp 1600w" sizes="(min-width: 1280px) 625px, (min-width: 850px) 50vw, 90vw" width="1600" height="1200" alt="Blue and cream ceramic seascape with two white sails and a red navigation marker, by Pat Todd" loading="eager" fetchpriority="high" />
-      <span data-edit="home.image-caption" data-edit-label="Photograph caption">Explore my work ↗</span>
+      <div class="hero-caption"><span data-edit="home.image-caption" data-edit-label="Photograph caption">Explore my work</span> <DiagonalArrow /></div>
     </a>
   </section>
 
@@ -51,7 +52,7 @@ import { site } from '../config';
   .plain-link { display: inline-block; text-decoration: underline; text-underline-offset: 0.3em; }
   .hero-image { position: relative; display: block; }
   .hero-image img { width: 100%; height: auto; }
-  .hero-image span { display: block; margin-top: 0.75rem; text-align: right; font-size: 0.85rem; }
+  .hero-caption { margin-top: 0.75rem; text-align: right; font-size: 0.85rem; }
   .events-section { border-top: 1px solid var(--color-line); scroll-margin-top: 6rem; }
   .events-grid { display: grid; gap: 3rem; }
   .events-grid h2 { font-size: clamp(2rem, 4vw, 3rem); margin: 0.8rem 0 1rem; }

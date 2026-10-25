@@ -1,4 +1,5 @@
 ---
+import DiagonalArrow from './DiagonalArrow.astro';
 import { getCollection } from 'astro:content';
 import { upcomingEvents, eventEndDay, formatEventDate } from '../utils/events';
 
@@ -20,7 +21,7 @@ const { showPosters = false } = Astro.props;
       <p class="event-location"><span data-edit={`event.${event.slug}.location`} data-edit-label="Event venue">{event.data.location}</span> · <span data-edit={`event.${event.slug}.hours`} data-edit-label="Opening hours">{event.data.time}</span></p>
       <p class="event-description" data-edit={`event.${event.slug}.description`} data-edit-label="Event description">{event.data.description}</p>
       <a class="event-link" href="/contact">Ask me about this event →</a>
-      {event.data.detailsUrl && <a class="event-link organiser-link" href={event.data.detailsUrl}>Visit the organiser’s website ↗</a>}
+      {event.data.detailsUrl && <a class="event-link organiser-link" href={event.data.detailsUrl}>Visit the organiser’s website <DiagonalArrow /></a>}
       {showPosters && event.data.image && (
         <a class="event-poster" data-edit-image-link={`event.${event.slug}.image`} href={event.data.image} aria-label={`View the full poster for ${event.data.title}`}>
           <img data-edit-image={`event.${event.slug}.image`} data-edit-label="Event poster" src={event.data.image} alt={event.data.imageAlt ?? event.data.title} loading="lazy" />
