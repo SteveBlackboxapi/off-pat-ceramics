@@ -13,6 +13,7 @@
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
+    "@jsquash/webp": "1.5.0",
     "@supabase/supabase-js": "2.117.3",
     "astro": "^4.16.18"
   },

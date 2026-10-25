@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { canvasWebp } from './image-encoding';
 import { SUPABASE_URL, SUPABASE_KEY, IMAGE_BUCKET } from './config';
 import { cleanContent, contactHref, dateLabel, type Content, type ImageValue } from './content';
 import { selectedPieces } from '../data/pieces';
@@ -266,8 +267,7 @@ async function webp(bitmap: ImageBitmap, edge: number) {
   const canvas = document.createElement('canvas'); canvas.width = Math.max(1, Math.round(bitmap.width * ratio)); canvas.height = Math.max(1, Math.round(bitmap.height * ratio));
   const context = canvas.getContext('2d'); if (!context) throw new Error('This browser cannot prepare images. Please try Chrome or Safari.');
   context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(result => result ? resolve(result) : reject(new Error('Image conversion failed.')), 'image/webp', 0.84));
-  if (blob.type !== 'image/webp' || blob.size > 6 * 1024 * 1024) throw new Error('Please try a smaller photograph.');
+  const blob = await canvasWebp(canvas);
   return { blob, width: canvas.width, height: canvas.height };
 }
 async function prepareImage(blob: Blob, alt: string, progress = status): Promise<ImageValue> {
